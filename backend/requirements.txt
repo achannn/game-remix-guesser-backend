@@ -1,11 +1,14 @@
 click==8.0.1
-Flask==2.0.1
+fastapi==0.66.1
 greenlet==1.1.0
 itsdangerous==2.0.1
 Jinja2==3.0.1
 MarkupSafe==2.0.1
 mysql-connector-python==8.0.25
 protobuf==3.17.3
+pydantic==1.8.2
 six==1.16.0
 SQLAlchemy==1.4.21
+starlette==0.14.2
+typing-extensions==3.10.0.0
 Werkzeug==2.0.1

@@ -1,9 +1,31 @@
-import os
-from flask import Flask
+from fastapi import Depends, FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy.orm import Session
 
-app = Flask(__name__)
+from . import models
+from .database import SessionLocal, engine
+
+models.Base.metadata.create_all(bind=engine)
 
 
-@app.route('/')
-def hello_world():
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+    allow_credentials=True,
+)
+
+# Dependency
+def get_db():
+    try:
+        db = SessionLocal()
+        yield db
+    finally:
+        db.close()
+
+@app.get('/')
+def main():
   return 'Hello, Docker!'
