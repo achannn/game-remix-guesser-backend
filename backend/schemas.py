@@ -59,7 +59,7 @@ class OriginalArtist(OriginalArtistBase):
 class VideogameBase(BaseModel):
     videogame_title: str
     videogame_ocremix_url: str
-    videogame_console: str
+    # videogame_console: str
 
 class VideogameCreate(VideogameBase):
     pass
