@@ -9,7 +9,7 @@ host = os.getenv('MYSQL_HOST')
 port = os.getenv('MYSQL_PORT')
 DB_NAME = os.getenv('MYSQL_DB')
 
-SQLALCHEMY_DATABASE_URL = f"mysql://{username}:{password}@{host}:{port}"
+SQLALCHEMY_DATABASE_URL = f"mysql+pymysql://{username}:{password}@{host}:{port}"
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL, connect_args={ "check_same_thread": False }

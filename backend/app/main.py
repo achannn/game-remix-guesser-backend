@@ -31,10 +31,10 @@ def main():
   return 'Hello, Docker!'
 
 
-@app.get('/parse/{ocremixid}', response_model=schemas.Remix)
+@app.get('/parse/{ocremixid}')
 def consume_ocremix_remix(ocremixid: str, db: Session = Depends(get_db)):
   page_url = f"https://ocremix.org/remix/{ocremixid}"
-  page_info = scraper.scrame_remix_page(page_url)
+  page_info = scraper.scrape_remix_page(page_url)
   remix = {
     'remix_youtube_url': page_info.remix_youtube_url,
     'ocremix_remix_url': page_info.ocremix_remix_url,
