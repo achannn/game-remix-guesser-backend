@@ -27,7 +27,7 @@ def deep_create_remix(
         db: Session,
         remix: schemas.RemixCreate,
         remix_artist: schemas.RemixArtistCreate,
-        remix_original_song: schemas.RemixOriginalSongCreate,
+        remix_original_song: schemas.OriginalSongCreate,
         original_artist: schemas.OriginalArtistCreate,
         videogame: schemas.VideogameCreate):
 
