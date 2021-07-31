@@ -1,3 +1,4 @@
+import time
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
@@ -5,8 +6,12 @@ from sqlalchemy.orm import Session
 from . import crud, models, schemas, scraper
 from .database import SessionLocal, engine
 
-models.Base.metadata.create_all(bind=engine)
-
+try:
+    models.Base.metadata.create_all(bind=engine)
+except:
+    print('try SLEEPING')
+    time.sleep(14)
+    models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
@@ -16,7 +21,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
     allow_credentials=True,
-)
+    )
 
 # Dependency
 def get_db():
