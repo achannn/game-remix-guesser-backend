@@ -13,10 +13,11 @@ print(username)
 print(password)
 print(host)
 print(port)
-SQLALCHEMY_DATABASE_URL = f"mysql+pymysql://{username}:{password}@{host}:{port}"
+SQLALCHEMY_DATABASE_URL = f"mysql+mysqlconnector://{username}:{password}@{host}:{port}"
 
 engine = create_engine(
-    SQLALCHEMY_DATABASE_URL, connect_args={ }
+    SQLALCHEMY_DATABASE_URL,
+    connect_args={'auth_plugin': 'mysql_native_password'}
 )
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

@@ -8,14 +8,12 @@ services:
   - 5000:5000
   env_file:
   - .dev.env
-  volumes:
-  - .:/backend/
   networks:
     - local-net
   depends_on:
-    - mysqldb
+    - mysqldbgame
 
- mysqldb:
+ mysqldbgame:
   image: mysql
   # container_name: "mysqldb"
   restart: always
@@ -24,8 +22,8 @@ services:
   env_file:
   - .dev.env
   volumes:
-  - mysql:/var/lib/mysql
-  - mysql_config:/etc/mysql
+  - mysqlgame:/var/lib/mysql
+  - mysql_configgame:/etc/mysql
   networks:
   - local-net
 
@@ -36,8 +34,8 @@ services:
    - 8080:8080
 
 volumes:
-  mysql:
-  mysql_config:
+  mysqlgame:
+  mysql_configgame:
 
 networks:
   local-net:
