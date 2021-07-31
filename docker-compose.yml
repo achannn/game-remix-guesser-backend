@@ -7,7 +7,7 @@ services:
   ports:
   - 5000:5000
   env_file:
-  - .dev.env
+  - .example.dev.env
   networks:
     - local-net
   depends_on:
@@ -20,7 +20,7 @@ services:
   ports:
   - 3306:3306
   env_file:
-  - .dev.env
+  - .example.dev.env
   volumes:
   - mysqlgame:/var/lib/mysql
   - mysql_configgame:/etc/mysql
