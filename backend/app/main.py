@@ -4,14 +4,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
 from . import crud, models, schemas, scraper
-from .database import SessionLocal, engine
+from .database import SessionLocal, engine, Base
 
 try:
-    models.Base.metadata.create_all(bind=engine)
+    Base.metadata.create_all(bind=engine)
 except:
     print('try SLEEPING')
     time.sleep(14)
-    models.Base.metadata.create_all(bind=engine)
+    Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
