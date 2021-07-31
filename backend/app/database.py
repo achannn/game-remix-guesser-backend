@@ -5,9 +5,7 @@ from sqlalchemy.orm import sessionmaker
 
 username = os.getenv('MYSQL_USER')
 password = os.getenv('MYSQL_ROOT_PASSWORD')
-# MYSQL_HOST is known internally by the MySQL container
-# When containers connect to eachother over a network they use the container name as host
-host = "game-remix-guesser_mysqldbgame_1" # os.getenv('MYSQL_HOST')
+host = os.getenv('MYSQL_HOST')
 port = os.getenv('MYSQL_PORT')
 DB_NAME = os.getenv('MYSQL_DB')
 
