@@ -6,12 +6,21 @@ from sqlalchemy.orm import Session
 from . import crud, models, schemas, scraper
 from .database import SessionLocal, engine
 
-try:
-    models.Base.metadata.create_all(bind=engine)
-except:
-    print('try SLEEPING')
-    time.sleep(14)
-    models.Base.metadata.create_all(bind=engine)
+retries = 5
+def initiate_connection(retries: int):
+    try:
+        models.Base.metadata.create_all(bind=engine)
+    except Exception as inst:
+        print(f"db connection {retries} failed because {inst}")
+        if retries > 0:
+            print('Trying to reconnect')
+            retries = retries - 1
+            time.sleep(4)
+            initiate_connection(retries)
+        else:
+            print('Failed to reconnect, giving up.')
+
+initiate_connection(retries)
 
 app = FastAPI()
 

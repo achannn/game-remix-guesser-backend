@@ -15,7 +15,7 @@ services:
 
  mysqldbgame:
   image: mysql
-  container_name: "mysqldbtest"
+  container_name: "mysqldbgame"
   restart: always
   ports:
   - 3306:3306
@@ -27,11 +27,11 @@ services:
   networks:
   - local-net
 
- frontend:
-   build:
-     context: ./frontend/
-   ports:
-   - 8080:8080
+ # frontend:
+ #   build:
+ #     context: ./frontend/
+ #   ports:
+ #   - 8080:8080
 
 volumes:
   mysqlgame:
