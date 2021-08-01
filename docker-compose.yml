@@ -12,6 +12,7 @@ services:
     - local-net
   depends_on:
     - mysqldbgame
+  volumes: ['./backend:/app']
 
  mysqldbgame:
   image: mysql
