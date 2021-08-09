@@ -3,24 +3,26 @@ from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
-from . import crud, models, schemas, scraper
+from . import crud, models, schemas, scraper, internal
 from .database import SessionLocal, engine, Base
+
 
 retries = 5
 def initiate_connection(retries: int):
     try:
         models.Base.metadata.create_all(bind=engine)
     except Exception as inst:
-        print(f"db connection {retries} failed because {inst}")
+        internal.log_error(f"db connection {retries} failed because {inst}")
         if retries > 0:
-            print('Trying to reconnect')
+            internal.log_error('Trying to reconnect')
             retries = retries - 1
             time.sleep(4)
             initiate_connection(retries)
         else:
-            print('Failed to reconnect, giving up.')
+            internal.log_error('Failed to reconnect, giving up.')
 
 initiate_connection(retries)
+
 
 app = FastAPI()
 
@@ -39,6 +41,7 @@ def get_db():
         yield db
     finally:
         db.close()
+
 
 @app.get('/')
 def main():

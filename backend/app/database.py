@@ -2,23 +2,64 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.exc import OperationalError, StatementError, DatabaseError
+from sqlalchemy.orm.query import Query as _Query
+from time import sleep
+from . import internal
+# _mysql_connector.MySQLInterfaceError
 
 username = os.getenv('MYSQL_USER')
 password = os.getenv('MYSQL_ROOT_PASSWORD')
 host = os.getenv('MYSQL_HOST')
 port = os.getenv('MYSQL_PORT')
-DB_NAME = os.getenv('MYSQL_DB')
+DB_NAME = os.getenv('MYSQL_DATABASE')
 
 print(username)
 print(password)
 print(host)
 print(port)
-SQLALCHEMY_DATABASE_URL = f"mysql+mysqlconnector://{username}:{password}@{host}:{port}"
+print(DB_NAME)
+SQLALCHEMY_DATABASE_URL = f"mysql+mysqlconnector://{username}:{password}@{host}:{port}/{DB_NAME}"
+print(SQLALCHEMY_DATABASE_URL)
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL,
     connect_args={'auth_plugin': 'mysql_native_password'}
 )
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+
+class RetryingQuery(_Query):
+    __max_retry_count__ = 3
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def __iter__(self):
+        attempts = 0
+        while True:
+            attempts += 1
+            try:
+                return super().__iter__()
+            except OperationalError as ex:
+                if "server closed the connection unexpectedly" not in str(ex):
+                    raise
+                if attempts <= self.__max_retry_count__:
+                    sleep_for = 2 ** (attempts - 1)
+                    internal.log_error(
+                        "/!\ Database connection error: retrying Strategy => sleeping for {}s"
+                    " and will retry (attempt #{} of {}) \n Detailed query impacted: {}".format(
+                        sleep_for, attempts, self.__max_retry_count__, ex)
+                )
+                    sleep(sleep_for)
+                    continue
+                else:
+                    raise
+            except StatementError as ex:
+                if "reconnect until invalid transaction is rolled back" not in str(ex):
+                    raise
+                self.session.rollback()
+
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine, query_cls=RetryingQuery)
+
 
 Base = declarative_base()
