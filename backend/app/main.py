@@ -53,25 +53,25 @@ def consume_ocremix_remix(ocremixid: str, db: Session = Depends(get_db)):
   page_url = f"https://ocremix.org/remix/{ocremixid}"
   page_info = scraper.scrape_remix_page(page_url)
   remix = {
-    'remix_youtube_url': page_info.remix_youtube_url,
-    'ocremix_remix_url': page_info.ocremix_remix_url,
-    'remix_title': page_info.remix_title,
+    'remix_youtube_url': page_info['remix_youtube_url'],
+    'ocremix_remix_url': page_info['ocremix_remix_url'],
+    'remix_title': page_info['remix_title'],
   }
   remix_artist = {
-    'remix_artist_name': page_info.remix_artist_name,
-    'remix_arist_ocremix_url': page_info.remix_artist_ocremix_url,
+    'remix_artist_name': page_info['remix_artist_name'],
+    'remix_artist_ocremix_url': page_info['remix_artist_ocremix_url'],
   }
   remix_original_song = {
-    'original_song_title': page_info.original_song_title,
-    'original_song_ocremix_url': page_info.original_song_ocremix_url,
+    'original_song_title': page_info['original_song_title'],
+    'original_song_ocremix_url': page_info['original_song_ocremix_url'],
   }
   original_artist = {
-    'original_artist_name': page_info.original_artist_name,
-    'original_artist_ocremix_url': page_info.original_artist_ocremix_url,
+    'original_artist_name': page_info['original_artist_name'],
+    'original_artist_ocremix_url': page_info['original_artist_ocremix_url'],
   }
   videogame = {
-    'videogame_title': page_info.videogame_title,
-    'videogame_ocremix_url': page_info.videogame_ocremix_url,
+    'videogame_title': page_info['videogame_title'],
+    'videogame_ocremix_url': page_info['videogame_ocremix_url'],
     # 'videogame_console': page_info.videogame_console,
   }
 

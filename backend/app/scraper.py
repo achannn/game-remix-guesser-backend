@@ -76,11 +76,18 @@ def scrape_remix_page(url):
     try:
         options = Options()
         options.page_load_strategy = 'normal'
+        options.add_argument('--profile-directory=Default')
+        options.add_argument('--user-data-dir=~/.config/google-chrome')
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-dev-shm-usage')
+        options.add_argument('headless')
+
         driver = webdriver.Chrome(options=options)
         driver.get(url)
         remix_youtube_url_full = driver.find_element_by_id('player3').get_attribute('src')
         remix_youtube_url_parsed = urlparse(remix_youtube_url_full)
         remix_youtube_url = remix_youtube_url_parsed.netloc + remix_youtube_url_parsed.path
+
     except Exception as inst:
         internal.log_error(f"Issue getting youtube url for {url}, error is {inst}")
 

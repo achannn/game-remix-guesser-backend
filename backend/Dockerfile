@@ -14,6 +14,9 @@ RUN apt-get update && \
     wget -q --continue -P /chromedriver "http://chromedriver.storage.googleapis.com/$DRIVERVER/chromedriver_linux64.zip" && \
     unzip /chromedriver/chromedriver* -d /chromedriver
 
+ENV CHROMEDRIVER_DIR /chromedriver
+ENV PATH $CHROMEDRIVER_DIR:$PATH
+
 COPY requirements.txt requirements.txt
 
 RUN pip3 install -r requirements.txt

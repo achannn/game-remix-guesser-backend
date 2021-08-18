@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from . import models, schemas
+from . import models, schemas, internal
 
 # REMIX
 def get_remix(db: Session, remix_id: int):
@@ -31,17 +31,17 @@ def deep_create_remix(
         original_artist: schemas.OriginalArtistCreate,
         videogame: schemas.VideogameCreate):
 
-    remix_artist_db = get_remix_artist_by_name(db, remix_artist.remix_artist_name)
+    remix_artist_db = get_remix_artist_by_name(db, remix_artist['remix_artist_name'])
 
     if remix_artist_db is None:
         remix_artist_db = create_remix_artist(db, remix_artist)
 
-    remix_original_song_db = get_original_song_by_title(remix_original_song.original_song_title)
+    remix_original_song_db = get_original_song_by_title(db, original_song_title=remix_original_song['original_song_title'])
 
     if remix_original_song_db is None:
         remix_original_song_db = deep_create_original_song(db, remix_original_song, original_artist, videogame)
 
-    return create_remix(db, remix, remix_artist_db.id, remix_original_song_db.id)
+    return create_remix(db, remix, remix_artist_db['id'], remix_original_song_db['id'])
 
 
 # REMIX ARTIST
@@ -53,7 +53,7 @@ def get_remix_artist_by_name(db: Session, remix_artist_name: str):
     return db.query(models.RemixArtist).filter_by(remix_artist_name=remix_artist_name).first()
 
 def create_remix_artist(db: Session, remix_artist: schemas.RemixArtistCreate):
-    db_remix_artist = models.RemixArtist(**remix_artist.dict())
+    db_remix_artist = models.RemixArtist(**remix_artist)
     db.add(db_remix_artist)
     db.commit()
     db.refresh(db_remix_artist)
@@ -69,7 +69,7 @@ def get_original_song_by_title(db: Session, original_song_title: str):
 
 def create_original_song(db: Session, original_song: schemas.OriginalSongCreate, original_song_artist_id, original_song_videogame_id):
     db_original_song = models.OriginalSong(
-        **original_song.dict,
+        **original_song,
         original_song_artist_id=original_song_artist_id,
         original_song_videogame_id=original_song_videogame_id
         )
@@ -97,7 +97,7 @@ def get_original_artist(db: Session, original_artist_id: int):
     return db.query(models.OriginalArtist).filter(models.OriginalArtist.id == original_artist_id).first()
 
 def create_original_artist(db: Session, original_artist: schemas.OriginalArtistCreate):
-    db_original_artist = models.OriginalArtist(**original_artist.dict)
+    db_original_artist = models.OriginalArtist(**original_artist)
     db.add(db_original_artist)
     db.commit()
     db.refresh(db_original_artist)
@@ -115,7 +115,7 @@ def get_videogame_by_title(db: Session, videogame_title):
     return db.query(models.Videogame).filter_by(videogame_title=videogame_title).first()
 
 def create_videogame(db: Session, videogame: schemas.VideogameCreate):
-    db_videogame = models.Videogame(**videogame.dict)
+    db_videogame = models.Videogame(**videogame)
     db.add(db_videogame)
     db.commit()
     db.refresh(db_videogame)
