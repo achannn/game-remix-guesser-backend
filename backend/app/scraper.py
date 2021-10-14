@@ -44,7 +44,7 @@ def scrape_remix_page(url):
 
 
     try:
-        original_song_title = soup.find('h3').contents[1].contents
+        original_song_title = soup.find('h3').contents[1].contents[0]
     except Exception as inst:
         internal.log_error(f"Issue getting original song title for {url}, error is {inst}")
 
