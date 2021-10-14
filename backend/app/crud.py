@@ -36,7 +36,9 @@ def deep_create_remix(
     if remix_artist_db is None:
         remix_artist_db = create_remix_artist(db, remix_artist)
 
-    remix_original_song_db = get_original_song_by_title(db, original_song_title=remix_original_song['original_song_title'])
+    remix_original_song_db = get_original_song_by_title(db, original_song_title=remix_original_song['original_song_title'][0])
+    print("what was the result of get original song function?")
+    print(remix_original_song_db)
 
     if remix_original_song_db is None:
         remix_original_song_db = deep_create_original_song(db, remix_original_song, original_artist, videogame)
@@ -68,16 +70,12 @@ def get_original_song(db: Session, original_song_id: int):
     return db.query(models.OriginalSong).filter(models.OriginalSong.id == original_song_id).first()
 
 def get_original_song_by_title(db: Session, original_song_title: str):
-    print(db.query(models.OriginalSong))
-    print(type(db.query(models.OriginalSong)))
-    print(db.query(models.OriginalSong).filter_by(original_song_title=original_song_title))
-    print(type(db.query(models.OriginalSong).filter_by(original_song_title=original_song_title)))
+    print("are we getting the right stuff?")
+    print(original_song_title)
+
     query = db.query(models.OriginalSong).filter_by(original_song_title=original_song_title)
     print(query.all())
-    print(query.one())
 
-    print(db.query(models.OriginalSong).filter_by(original_song_title=original_song_title).first())
-    print(type(db.query(models.OriginalSong).filter_by(original_song_title=original_song_title).first()))
     return db.query(models.OriginalSong).filter_by(original_song_title=original_song_title).first()
 
 def create_original_song(db: Session, original_song: schemas.OriginalSongCreate, original_song_artist_id, original_song_videogame_id):
@@ -93,13 +91,14 @@ def create_original_song(db: Session, original_song: schemas.OriginalSongCreate,
 
 def deep_create_original_song(db: Session, original_song: schemas.OriginalSongCreate, original_artist_create: schemas.OriginalArtistCreate, videogame_create: schemas.VideogameCreate):
 
-    original_artist_db = get_original_artist_by_name(db, original_artist_create)
+    original_artist_db = get_original_artist_by_name(db, original_artist_create['original_artist_name'])
 
     if (original_artist_db is None):
         # Make song
         original_artist_db = create_original_artist(db, original_artist_create)
 
-    videogame_db = get_videogame_by_title(db, videogame_create.title)
+    print("what is videogame create?")
+    videogame_db = get_videogame_by_title(db, videogame_create['title'])
 
     if (videogame_db is None):
         videogame_db = create_videogame(db, videogame_create)
