@@ -59,7 +59,7 @@ class RetryingQuery(_Query):
                     raise
                 self.session.rollback()
 
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine, query_cls=RetryingQuery)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
 Base = declarative_base()

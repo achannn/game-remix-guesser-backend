@@ -50,7 +50,10 @@ def get_remix_artist(db: Session, remix_artist_id: int):
     return db.query(models.RemixArtist).filter(models.RemixArtist.id == remix_artist_id).first()
 
 def get_remix_artist_by_name(db: Session, remix_artist_name: str):
-    return db.query(models.RemixArtist).filter_by(remix_artist_name=remix_artist_name).first()
+    query = db.query(models.RemixArtist).filter_by(remix_artist_name=remix_artist_name).first()
+    print("remix artist by name query inc")
+    print(query)
+    return query
 
 def create_remix_artist(db: Session, remix_artist: schemas.RemixArtistCreate):
     db_remix_artist = models.RemixArtist(**remix_artist)
@@ -65,6 +68,16 @@ def get_original_song(db: Session, original_song_id: int):
     return db.query(models.OriginalSong).filter(models.OriginalSong.id == original_song_id).first()
 
 def get_original_song_by_title(db: Session, original_song_title: str):
+    print(db.query(models.OriginalSong))
+    print(type(db.query(models.OriginalSong)))
+    print(db.query(models.OriginalSong).filter_by(original_song_title=original_song_title))
+    print(type(db.query(models.OriginalSong).filter_by(original_song_title=original_song_title)))
+    query = db.query(models.OriginalSong).filter_by(original_song_title=original_song_title)
+    print(query.all())
+    print(query.one())
+
+    print(db.query(models.OriginalSong).filter_by(original_song_title=original_song_title).first())
+    print(type(db.query(models.OriginalSong).filter_by(original_song_title=original_song_title).first()))
     return db.query(models.OriginalSong).filter_by(original_song_title=original_song_title).first()
 
 def create_original_song(db: Session, original_song: schemas.OriginalSongCreate, original_song_artist_id, original_song_videogame_id):
