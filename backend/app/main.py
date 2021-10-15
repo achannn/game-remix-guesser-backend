@@ -75,3 +75,7 @@ def consume_ocremix_remix(ocremixid: str, db: Session = Depends(get_db)):
     # 'videogame_console': page_info.videogame_console,
   }
   return crud.deep_create_remix(db, remix, remix_artist, remix_original_song, original_artist, videogame)
+
+@app.get('/game/')
+def give_remix(db: Session = Depends(get_db)):
+    return crud.get_remixes(db)

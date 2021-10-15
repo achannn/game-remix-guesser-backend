@@ -45,7 +45,7 @@
   "gitHooks": {
     "pre-commit": "lint-staged"
   },
-  "license": "MIT",
+  "license": "GPL-3",
   "lint-staged": {
     "*.{js,jsx,vue,ts,tsx}": [
       "vue-cli-service lint",
