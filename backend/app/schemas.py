@@ -6,6 +6,7 @@ class RemixBase(BaseModel):
     remix_title: str
 
 class RemixCreate(RemixBase):
+    ocremix_remix_id: str
     pass
 
 class Remix(RemixBase):

@@ -56,6 +56,7 @@ def consume_ocremix_remix(ocremixid: str, db: Session = Depends(get_db)):
     'remix_youtube_url': page_info['remix_youtube_url'],
     'ocremix_remix_url': page_info['ocremix_remix_url'],
     'remix_title': page_info['remix_title'],
+    'ocremix_remix_id': ocremixid,
   }
   remix_artist = {
     'remix_artist_name': page_info['remix_artist_name'],
@@ -74,7 +75,7 @@ def consume_ocremix_remix(ocremixid: str, db: Session = Depends(get_db)):
     'videogame_ocremix_url': page_info['videogame_ocremix_url'],
     # 'videogame_console': page_info.videogame_console,
   }
-  ocremix_mix = db.query(models.Remix).filter_by(ocremix_remix_url=remix['ocremix_remix_url']).first()
+  ocremix_mix = db.query(models.Remix).filter_by(ocremix_remix_id=remix['ocremix_remix_id']).first()
   if (ocremix_mix is not None):
       return ocremix_mix
   return crud.deep_create_remix(db, remix, remix_artist, remix_original_song, original_artist, videogame)

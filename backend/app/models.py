@@ -8,6 +8,7 @@ class Remix(Base):
     __tablename__ = "remixes"
 
     id = Column(Integer, primary_key=True, index=True)
+    ocremix_remix_id = Column(String(20), index=True)
     remix_youtube_url = Column(String(600), index=True)
     ocremix_remix_url = Column(String(600), index=True)
     remix_title = Column(String(600), index=True)
