@@ -15,6 +15,11 @@ export default createStore({
       const responseJson = await response.json();
       console.log(responseJson);
     },
+    async submitRemixForParsing({ commit }, id: string) {
+      const response = await fetch(`/parse/${id}`);
+      const responseJson = await response.json();
+      console.log(responseJson);
+    },
   },
   modules: {
   },
