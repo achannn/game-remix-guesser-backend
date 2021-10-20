@@ -173,3 +173,9 @@ def find_remix_without_question(db: Session):
     subquery = db.query(models.Question.correct_remix_id)
     result = db.query(models.Remix).filter(models.Remix.id.not_in(subquery))
     return result.first()
+
+# TODO
+# For now I don't really know how to prevent the same question being sent twice
+# Sessions?
+def return_random_question(db: Session):
+    return db.query(models.Question).order_by(func.rand()).first()

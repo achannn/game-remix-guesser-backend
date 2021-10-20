@@ -83,9 +83,16 @@ def consume_ocremix_remix(ocremixid: str, db: Session = Depends(get_db)):
       return ocremix_mix
   return crud.deep_create_remix(db, remix, remix_artist, remix_original_song, original_artist, videogame)
 
-@app.get('/game/')
-def give_remix(db: Session = Depends(get_db)):
+@app.get('/remixes/')
+def give_remixes(db: Session = Depends(get_db)):
     return crud.get_remixes(db)
+
+@app.get('/game/')
+def give_question(db: Session = Depends(get_db)):
+    return crud.return_random_question(db)
+
+# @app.get('/question/{question_id}')
+# def check_if_answer_correct():
 
 @app.get('/makequestion/')
 def generate_question(db: Session = Depends(get_db)):
