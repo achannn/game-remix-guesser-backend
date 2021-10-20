@@ -20,6 +20,16 @@ export default createStore({
       const responseJson = await response.json();
       console.log(responseJson);
     },
+    async generateQuestion() {
+      const response = await fetch('/makequestion/');
+      const responseJson = await response.json();
+      console.log(responseJson);
+    },
+    async seedDB() {
+      const response = await fetch('/seed/');
+      const responseJson = await response.json();
+      console.log(responseJson);
+    },
   },
   modules: {
   },

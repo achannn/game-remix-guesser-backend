@@ -70,3 +70,44 @@ class Videogame(VideogameBase):
 
     class Config:
         orm_mode = True
+
+class GameBase(BaseModel):
+    score: int
+
+class GameCreate(GameBase):
+    pass
+
+class Game(GameBase):
+    id: int
+
+    class Config:
+        orm_mode = True
+
+class QuestionBase(BaseModel):
+    pass
+
+class QuestionCreate(QuestionBase):
+    correct_remix_id: int
+    choice_1_remix_id: int
+    choice_2_remix_id: int
+    choice_3_remix_id: int
+
+class Question(QuestionBase):
+
+    class Config:
+        orm_mode = True
+
+class QuestionInstanceBase(BaseModel):
+    pass;
+
+class QuestionInstanceCreate(QuestionInstanceBase):
+    question_id: int
+    game_id: int
+    correct: bool
+    asked: bool
+
+class Question(QuestionInstanceBase):
+    id: int
+
+    class Config:
+        orm_mode = True

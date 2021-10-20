@@ -51,7 +51,10 @@ def main():
 @app.get('/parse/{ocremixid}')
 def consume_ocremix_remix(ocremixid: str, db: Session = Depends(get_db)):
   page_url = f"https://ocremix.org/remix/{ocremixid}"
-  page_info = scraper.scrape_remix_page(page_url)
+  try:
+      page_info = scraper.scrape_remix_page(page_url)
+  except:
+      raise
   remix = {
     'remix_youtube_url': page_info['remix_youtube_url'],
     'ocremix_remix_url': page_info['ocremix_remix_url'],
@@ -83,3 +86,35 @@ def consume_ocremix_remix(ocremixid: str, db: Session = Depends(get_db)):
 @app.get('/game/')
 def give_remix(db: Session = Depends(get_db)):
     return crud.get_remixes(db)
+
+@app.get('/makequestion/')
+def generate_question(db: Session = Depends(get_db)):
+    return crud.generate_question(db)
+
+@app.get('/seed/')
+def seed_db(db: Session = Depends(get_db)):
+    ids = [
+        "OCR04280",
+        "OCR04270",
+        "OCR04271",
+        "OCR04272",
+        "OCR04273",
+        "OCR04274",
+        "OCR04275",
+        "OCR04276",
+        "OCR04277",
+        "OCR04278",
+        "OCR04279",
+        "OCR04260",
+        "OCR04261",
+        "OCR04262",
+        "OCR04263",
+        "OCR04264",
+        "OCR04265",
+        "OCR04266",
+        "OCR04267",
+        "OCR04268",
+        "OCR04269",
+
+    ]
+    return [consume_ocremix_remix(i, db) for i in ids]

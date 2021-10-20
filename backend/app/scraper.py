@@ -14,11 +14,17 @@ def get_soup(page):
     return BeautifulSoup(page, "html.parser")
 
 def scrape_remix_page(url):
+    print("Trying to scrape url")
+    print(url)
     try :
         soup = get_soup(get_page(url))
     except Exception as inst:
         internal.log_error(f"Issue getting soup for {url}, error is {inst}")
+        raise
+        # return inst
 
+    print ("Successfully at least acquired url")
+    print (url)
     song_info = soup.find("h1")
 
     if song_info is None:

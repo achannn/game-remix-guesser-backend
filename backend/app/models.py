@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, Boolean
 from sqlalchemy.orm import relationship
 from .database import Base
 
@@ -14,6 +14,10 @@ class Remix(Base):
     remix_title = Column(String(600), index=True)
     remix_artist_id = Column(ForeignKey('remix_artists.id'))
     remix_original_song_id = Column(ForeignKey('original_songs.id'))
+
+    # Put here with the hope it'd make generating questions easier
+    # I'm not actually sure if it's doing that
+    question = relationship("Question", foreign_keys="[Question.correct_remix_id]")
 
 
 class RemixArtist(Base):
@@ -53,3 +57,29 @@ class Videogame(Base):
     videogame_console = Column(String(600), index=True)
 
     original_songs = relationship("OriginalSong", backref="videogames")
+
+# class Game(Base):
+#     __tablename__ = "games"
+
+#     id = Column(Integer, primary_key=True, index=True)
+#     score  = Column(Integer)
+
+#     questions = relationship("QuestionInstance", backref="games")
+
+class Question(Base):
+    __tablename__ = "questions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    correct_remix_id = Column(Integer, ForeignKey('remixes.id'))
+    choice_1_remix_id = Column(Integer, ForeignKey('remixes.id'))
+    choice_2_remix_id = Column(Integer, ForeignKey('remixes.id'))
+    choice_3_remix_id = Column(Integer, ForeignKey('remixes.id'))
+
+# class QuestionInstance(Base):
+#     __tablename__ = "question_instances"
+
+#     id = Column(Integer, primary_key=True, index=True)
+#     question_id = Column(Integer, ForeignKey('questions.id'))
+#     game_id = Column(Integer, ForeignKey('games.id'))
+#     correct = Column(Boolean)
+#     asked = Column(Boolean)

@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from sqlalchemy.sql.expression import func
 
 from . import models, schemas, internal
 
@@ -121,3 +122,54 @@ def create_videogame(db: Session, videogame: schemas.VideogameCreate):
     db.commit()
     db.refresh(db_videogame)
     return db_videogame
+
+# GAME
+
+ # def create_game(db: Session):
+#     game = models.Game({ 'score': 0})
+#     db.add(game)
+#     db.commit()
+#     db.refresh(game)
+#     return game
+
+# def get_game_by_id(db: Session, game_id: int):
+#     game = db.query(models.Game).filter(models.Game.id == game_id).first()
+
+# QUESTION
+
+def create_question(db: Session,
+                    correct_remix: schemas.Remix,
+                    choice_1_remix: schemas.Remix,
+                    choice_2_remix: schemas.Remix,
+                    choice_3_remix: schemas.Remix,
+                    ):
+    question = models.Question(
+        correct_remix_id= correct_remix.id,
+        choice_1_remix_id= choice_1_remix.id,
+        choice_2_remix_id= choice_2_remix.id,
+        choice_3_remix_id= choice_3_remix.id
+    )
+    db.add(question)
+    db.commit()
+    db.refresh(question)
+    return question
+
+def generate_question(db: Session):
+    remix_without_question = find_remix_without_question(db)
+    if remix_without_question is None:
+        print("no more remixes without questions maybe?")
+        return None
+    choice_1 = db.query(models.Remix).filter(models.Remix.id != remix_without_question.id).order_by(func.rand()).first()
+    choice_2 = db.query(models.Remix).filter(models.Remix.id != remix_without_question.id).order_by(func.rand()).first()
+    choice_3 = db.query(models.Remix).filter(models.Remix.id != remix_without_question.id).order_by(func.rand()).first()
+    question = create_question(db, correct_remix=remix_without_question, choice_1_remix=choice_1, choice_2_remix=choice_2, choice_3_remix=choice_3)
+    return question
+
+def find_remix_without_question(db: Session):
+    # Compare Question table against Remix
+    # Find Remixes without Questions
+    # I bet there's a super smarty pants way to do this
+    # oh well, this works
+    subquery = db.query(models.Question.correct_remix_id)
+    result = db.query(models.Remix).filter(models.Remix.id.not_in(subquery))
+    return result.first()
