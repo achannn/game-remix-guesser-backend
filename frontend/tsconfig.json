@@ -36,12 +36,18 @@
     "tests/**/*.tsx"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "src/plugins/vue-youtube.ts"
   ],
   "rules": {
     "variable-name": [
       true,
       "allow-leading-underscore"
     ]
-  }
+  },
+    "linterOptions": {
+        "exclude": [
+    "src/plugins/vue-youtube.ts"
+        ]
+    }
 }

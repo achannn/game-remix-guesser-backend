@@ -3,9 +3,10 @@
       <section class="introduction nes-container is-rounded">
           <p>Welcome to the Game Music Guessing Game!</p>
           <p>To play, click the "Play" button below.</p>
-          <button class="play nes-btn">Play</button>
+          <button @click="goToGame" class="play nes-btn">Play</button>
           <h2>Instructions</h2>
-          <p>You will be presented with a play button. When you click it, music will start playing,
+          <p>You will be presented with a "play song" button.
+              When you click it, music will start playing,
               and four video game titles will display as radio items.</p>
           <p>When you think you know which game the song is derived from,
               choose it in the list, and click "Submit my Guess"</p>
@@ -28,7 +29,13 @@ export default defineComponent({
   mounted() {
     this.$store.dispatch('getRemixes');
   },
+  methods: {
+    goToGame() {
+      this.$router.push({ name: 'Game' });
+    },
+  },
 });
+
 </script>
 <style lang="scss" scoped>
 
