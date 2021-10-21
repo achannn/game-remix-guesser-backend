@@ -89,14 +89,10 @@ def give_remixes(db: Session = Depends(get_db)):
 
 @app.get('/game/')
 def give_question(db: Session = Depends(get_db)):
-    return crud.return_random_question(db)
+    return crud.generate_question(db)
 
 # @app.get('/question/{question_id}')
 # def check_if_answer_correct():
-
-@app.get('/makequestion/')
-def generate_question(db: Session = Depends(get_db)):
-    return crud.generate_question(db)
 
 @app.get('/seed/')
 def seed_db(db: Session = Depends(get_db)):

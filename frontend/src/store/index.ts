@@ -11,7 +11,7 @@ export default createStore({
   },
   actions: {
     async getRemixes({ commit }) {
-      const response = await fetch('/game/');
+      const response = await fetch('/remixes/');
       const responseJson = await response.json();
       console.log(responseJson);
     },
@@ -21,7 +21,7 @@ export default createStore({
       console.log(responseJson);
     },
     async generateQuestion() {
-      const response = await fetch('/makequestion/');
+      const response = await fetch('/game/');
       const responseJson = await response.json();
       console.log(responseJson);
     },

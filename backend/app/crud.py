@@ -155,6 +155,29 @@ def create_question(db: Session,
     return question
 
 def generate_question(db: Session):
+    questions = db.query(models.Remix).order_by(func.rand()).limit(4)
+    response = construct_frontend_question(questions)
+    return response
+
+def construct_frontend_question(questions):
+    response = {
+        'choices': [],
+        'question': {
+            'remix_youtube_url': questions[0].remix_youtube_url,
+            'secret_id': questions[0].secret_id
+        }
+    }
+    for question in questions:
+        response['choices'].append({
+            'origin_game': question.remix_original_song.original_song_videogame.videogame_title,
+            'public_id': question.public_id
+        })
+    return response
+
+
+# Oops, found a better way with public/secret key pairs
+# Oh well
+def generate_question_deprecated(db: Session):
     remix_without_question = find_remix_without_question(db)
     if remix_without_question is None:
         print("no more remixes without questions maybe?")
@@ -165,6 +188,7 @@ def generate_question(db: Session):
     question = create_question(db, correct_remix=remix_without_question, choice_1_remix=choice_1, choice_2_remix=choice_2, choice_3_remix=choice_3)
     return question
 
+# Also deprecated for now
 def find_remix_without_question(db: Session):
     # Compare Question table against Remix
     # Find Remixes without Questions
