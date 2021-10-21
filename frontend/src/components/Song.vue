@@ -1,7 +1,7 @@
 <template>
     <div class="song">
         <div class="youtube-wrapper">
-            <youtube :video-id="id" ref="youtube" />
+            <youtube :video-id="youtubeId" ref="youtube" />
         </div>
         <button @click="play">Play!</button>
     </div>
@@ -9,14 +9,25 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { getIdFromUrl } from 'vue-youtube';
 import youtube from '../plugins/vue-youtube';
+
+// eslint-disable-next-line
+// ts-ignore
+function getYoutubeIdFromUrl(url: any) {
+  // eslint-disable-next-line
+  // ts-ignore
+  const blah = url.split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
+  // eslint-disable-next-line
+  // ts-ignore
+  // eslint-disable-next-line
+  return (blah[2] !== undefined) ? blah[2].split(/[^0-9a-z_\-]/i)[0] : blah[0];
+}
 
 export default defineComponent({
   name: 'Song',
   data() {
     return {
-      youtubeId: getIdFromUrl('https://www.youtube.com/watch?v=1xhghJVj2KE'),
+      youtubeId: getYoutubeIdFromUrl('https://www.youtube.com/watch?v=1xhghJVj2KE'),
       id: 'ZVMigc6aQl0',
     };
   },
