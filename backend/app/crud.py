@@ -161,18 +161,18 @@ def generate_question(db: Session):
     return response
 
 def construct_frontend_question(questions):
-    response = {
+    response = models.QuestionPackage({
         'choices': [],
-        'question': {
+        'question': models.Question({
             'remix_youtube_url': questions[0].remix_youtube_url,
             'secret_id': questions[0].secret_id
-        }
-    }
+        })
+    })
     for question in questions:
-        response['choices'].append({
+        response['choices'].append(models.Choice({
             'origin_game': question.remix_original_song.original_song_videogame.videogame_title,
             'public_id': question.public_id
-        })
+        }))
     return response
 
 def match_public_id_to_secret_id(db: Session, public_id: int, secret_id: int):

@@ -4,6 +4,7 @@ from sqlalchemy.orm import relationship, Session
 from .database import SessionLocal, Base, engine
 from random import randint
 from pydantic import BaseModel
+from typing import List
 
 # https://stackoverflow.com/questions/38754816/sqlalchemy-random-unique-integer
 def random_remix_public_id():
@@ -113,14 +114,14 @@ class Videogame(Base):
 
 #     questions = relationship("QuestionInstance", backref="games")
 
-class Question(Base):
-    __tablename__ = "questions"
+# class Question(Base):
+#     __tablename__ = "questions"
 
-    id = Column(Integer, primary_key=True, index=True)
-    correct_remix_id = Column(Integer, ForeignKey('remixes.id'))
-    choice_1_remix_id = Column(Integer, ForeignKey('remixes.id'))
-    choice_2_remix_id = Column(Integer, ForeignKey('remixes.id'))
-    choice_3_remix_id = Column(Integer, ForeignKey('remixes.id'))
+#     id = Column(Integer, primary_key=True, index=True)
+#     correct_remix_id = Column(Integer, ForeignKey('remixes.id'))
+#     choice_1_remix_id = Column(Integer, ForeignKey('remixes.id'))
+#     choice_2_remix_id = Column(Integer, ForeignKey('remixes.id'))
+#     choice_3_remix_id = Column(Integer, ForeignKey('remixes.id'))
 
 # class QuestionInstance(Base):
 #     __tablename__ = "question_instances"
@@ -139,3 +140,15 @@ class Question(Base):
 class Answer(BaseModel):
     secret_id: int
     public_id: int
+
+class Choice(BaseModel):
+    origin_game: str
+    public_id: int
+
+class Question(BaseModel):
+    remix_youtube_url: str
+    secret_id: int
+
+class QuestionPackage(BaseModel):
+    choices: List[Choice] = []
+    question: Question

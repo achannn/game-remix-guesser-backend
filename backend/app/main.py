@@ -87,7 +87,7 @@ def consume_ocremix_remix(ocremixid: str, db: Session = Depends(get_db)):
 def give_remixes(db: Session = Depends(get_db)):
     return crud.get_remixes(db)
 
-@app.get('/game/')
+@app.get('/game/', response_model=models.QuestionPackage)
 def give_question(db: Session = Depends(get_db)):
     return crud.generate_question(db)
 

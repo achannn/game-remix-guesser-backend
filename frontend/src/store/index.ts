@@ -1,12 +1,19 @@
 import { createStore } from 'vuex';
+import { QuestionPackage, Choice } from './types';
+
+export class State {
+  question: QuestionPackage | null = null;
+
+  selectedAnswer: Choice | null = null;
+}
+
+// export interface StateInterface extends State {};
 
 export default createStore({
-  state: {
-    currentRemixUrl: '',
-  },
+  state: new State(),
   mutations: {
-    setCurrentRemixUrl(state, payload) {
-      state.currentRemixUrl = payload;
+    setCurrentRemixUrl(state: State, payload) {
+      state.question = payload;
     },
   },
   actions: {
