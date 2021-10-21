@@ -91,8 +91,10 @@ def give_remixes(db: Session = Depends(get_db)):
 def give_question(db: Session = Depends(get_db)):
     return crud.generate_question(db)
 
-# @app.get('/question/{question_id}')
-# def check_if_answer_correct():
+@app.post('/game/')
+def check_answer(db: Session = Depends(get_db), answer: models.Answer = {}):
+    found_answer = crud.match_public_id_to_secret_id(db=db, public_id=answer.public_id, secret_id=answer.secret_id)
+    return found_answer
 
 @app.get('/seed/')
 def seed_db(db: Session = Depends(get_db)):

@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from sqlalchemy import and_
 from sqlalchemy.sql.expression import func
 
 from . import models, schemas, internal
@@ -173,6 +174,9 @@ def construct_frontend_question(questions):
             'public_id': question.public_id
         })
     return response
+
+def match_public_id_to_secret_id(db: Session, public_id: int, secret_id: int):
+    return db.query(models.Remix).filter(and_(models.Remix.secret_id == secret_id, models.Remix.public_id == public_id)).first()
 
 
 # Oops, found a better way with public/secret key pairs

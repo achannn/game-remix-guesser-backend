@@ -3,6 +3,7 @@ from fastapi import Depends
 from sqlalchemy.orm import relationship, Session
 from .database import SessionLocal, Base, engine
 from random import randint
+from pydantic import BaseModel
 
 # https://stackoverflow.com/questions/38754816/sqlalchemy-random-unique-integer
 def random_remix_public_id():
@@ -129,3 +130,12 @@ class Question(Base):
 #     game_id = Column(Integer, ForeignKey('games.id'))
 #     correct = Column(Boolean)
 #     asked = Column(Boolean)
+
+####################
+# NON-DATABASE MODELS
+####################
+
+# Used in the post request to determine if the player chose the right answer
+class Answer(BaseModel):
+    secret_id: int
+    public_id: int

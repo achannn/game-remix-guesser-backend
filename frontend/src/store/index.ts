@@ -30,6 +30,21 @@ export default createStore({
       const responseJson = await response.json();
       console.log(responseJson);
     },
+    async checkAnswer({ commit }, { public_id, secret_id }) {
+      const response = await fetch('/game/', {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          public_id,
+          secret_id,
+        }),
+      });
+      const responseJson = await response.json();
+      console.log(responseJson);
+    },
   },
   modules: {
   },
