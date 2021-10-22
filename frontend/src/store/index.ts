@@ -29,6 +29,12 @@ export default createStore({
       }
       return null;
     },
+    currentQuestionChoices: (state: State): Choice[] | null => {
+      if (state.questionPackage?.choices?.length) {
+        return state.questionPackage.choices;
+      }
+      return null;
+    },
   },
   mutations: {
     setQuestionPackage(state: State, payload) {
