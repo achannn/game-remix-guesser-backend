@@ -1,7 +1,8 @@
 <template>
   <div class="game">
-      <Song :youtubeId="youtubeId" />
-      <button @click="getSong" class="nes-btn">Get a Song</button>
+      <button @click="getSong" class="get-song nes-btn">Get a Song</button>
+
+      <Song v-if="youtubeId" :youtubeId="youtubeId" />
   </div>
 </template>
 
@@ -31,6 +32,10 @@ export default defineComponent({
 
 .game {
     height: 80vh;
+
+  .get-song {
+    margin-bottom: 40px;
+  }
 }
 
 </style>

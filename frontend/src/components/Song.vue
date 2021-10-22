@@ -3,7 +3,7 @@
         <div class="youtube-wrapper">
             <youtube :video-id="youtubeId" ref="youtube" />
         </div>
-        <button @click="play">Play!</button>
+        <button class="nes-btn is-success" @click="play">Play Song</button>
     </div>
 </template>
 
