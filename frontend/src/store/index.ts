@@ -18,6 +18,8 @@ export class State {
   selectedAnswer: number | null = null;
 
   correctAnswer: CorrectAnswer | null = null;
+
+  hasCheckedAnswer = false;
 }
 
 // export interface StateInterface extends State {};
@@ -38,6 +40,7 @@ export default createStore({
       return null;
     },
     correctAnswer: (state: State): CorrectAnswer | null => state.correctAnswer,
+    hasCheckedAnswer: (state: State): boolean => state.hasCheckedAnswer,
   },
   mutations: {
     setQuestionPackage(state: State, payload) {
@@ -50,9 +53,13 @@ export default createStore({
       state.selectedAnswer = null;
       state.correctAnswer = null;
       state.questionPackage = null;
+      state.hasCheckedAnswer = false;
     },
     setCorrectAnswer(state: State, answer: CorrectAnswer) {
       state.correctAnswer = answer;
+    },
+    setHasCheckedAnswer(state: State, hasChecked: boolean) {
+      state.hasCheckedAnswer = hasChecked;
     },
   },
   actions: {
@@ -78,6 +85,7 @@ export default createStore({
       console.log(responseJson);
     },
     async submitAnswer({ state, commit }) {
+      commit('setHasCheckedAnswer', false);
       const secret_id = state.questionPackage?.question.secret_id;
       const public_id = state.selectedAnswer;
       const response = await fetch('/game/', {
@@ -94,6 +102,7 @@ export default createStore({
       const responseJson = await response.json();
       console.log(responseJson);
       commit('setCorrectAnswer', responseJson);
+      commit('setHasCheckedAnswer', true);
     },
   },
   modules: {
