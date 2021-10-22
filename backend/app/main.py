@@ -47,6 +47,17 @@ def get_db():
 def main():
   return 'Hello, Docker!'
 
+@app.get('/remixes/{id}' )
+def get_remix_by_id(ocremix_id: str, db: Session = Depends(get_db)):
+    return crud.get_remix_by_ocremix_id(db, ocremix_id=ocremix_id)
+
+@app.get('remixes/create/{id}')
+def get_or_create_remix_by_id(ocremix_id: str, db: Session = Depends(get_db)):
+    remix = get_remix_by_id(ocremix_id=ocremix_id, db=db)
+    if remix is not None:
+        return remix
+    return consume_ocremix_remix(ocremix_id, db)
+
 
 @app.get('/parse/{ocremixid}')
 def consume_ocremix_remix(ocremixid: str, db: Session = Depends(get_db)):
@@ -54,7 +65,9 @@ def consume_ocremix_remix(ocremixid: str, db: Session = Depends(get_db)):
   try:
       page_info = scraper.scrape_remix_page(page_url)
   except:
-      raise
+      internal.log_error(f"Failed to get page {page_url}")
+      return None
+
   remix = {
     'remix_youtube_url': page_info['remix_youtube_url'],
     'ocremix_remix_url': page_info['ocremix_remix_url'],
@@ -108,4 +121,5 @@ def check_answer(db: Session = Depends(get_db), answer: models.Answer = {}):
 @app.get('/seed/')
 def seed_db(db: Session = Depends(get_db)):
     ids = internal.ids
-    return [consume_ocremix_remix(i, db) for i in ids]
+    result = [get_or_create_remix_by_id(ocremix_id=i, db=db) for i in ids]
+    return {"status": "ok"}

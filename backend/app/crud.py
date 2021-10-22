@@ -8,6 +8,9 @@ from . import models, schemas, internal
 def get_remix(db: Session, remix_id: int):
     return db.query(models.Remix).filter(models.Remix.id == remix_id).first()
 
+def get_remix_by_ocremix_id(db: Session, ocremix_id: str):
+    return db.query(models.Remix).filter(models.Remix.ocremix_remix_id == ocremix_id).first()
+
 def get_remixes(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Remix).offset(skip).limit(limit).all()
 
