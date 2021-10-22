@@ -161,14 +161,25 @@ def generate_question(db: Session):
     return response
 
 def construct_frontend_question(questions):
+    # Apparently, it's 1-indexed?
+    # limit(4) takes items [1, 2, 3, 4] not [0, 1, 2, 3]
+    # Am I crazy? Why is that??
+    choices = []
+    # Ok, not only that, apparently indexing is indeterminate?
+    # I get different results if I index at different times
+    # Run through list twice for now, it's only 4 items
+    for question in questions:
+        choices.append(question)
+
     response = models.QuestionPackage(
-        choices= [],
-        question= models.Question(
-            remix_youtube_url= questions[0].remix_youtube_url,
-            secret_id= questions[0].secret_id
+        choices=[],
+        question=models.Question(
+            remix_youtube_url=choices[0].remix_youtube_url,
+            secret_id=choices[0].secret_id,
         )
     )
-    for question in questions:
+
+    for question in choices:
         response.choices.append(models.Choice(
             origin_game= question.remix_original_song.original_song_videogame.videogame_title,
             public_id= question.public_id
