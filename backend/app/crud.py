@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import and_
 from sqlalchemy.sql.expression import func
+import random
 
 from . import models, schemas, internal
 
@@ -187,6 +188,7 @@ def construct_frontend_question(questions):
             origin_game= question.remix_original_song.original_song_videogame.videogame_title,
             public_id= question.public_id
         ))
+    random.shuffle(response.choices)
     return response
 
 def match_public_id_to_secret_id(db: Session, public_id: int, secret_id: int):
