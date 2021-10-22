@@ -20,7 +20,9 @@
     <button
       class="nes-btn"
       :class="{'is-disabled': !selectedChoice}"
-      :disabled="!!selectedChoice">
+      :disabled="!selectedChoice"
+      @click="submitAnswer"
+    >
       Submit Answer
     </button>
   </div>
@@ -36,9 +38,24 @@ export default defineComponent({
       selectedChoice: '',
     };
   },
+  methods: {
+    submitAnswer() {
+      this.$store.dispatch('submitAnswer');
+    },
+  },
   computed: {
     choices() {
       return this.$store.getters.currentQuestionChoices;
+    },
+  },
+  watch: {
+    // Why does a String need Deep????
+    selectedChoice: {
+      handler() {
+        console.log('selected choice changed', this.selectedChoice);
+        this.$store.commit('setSelectedChoice', Number(this.selectedChoice));
+      },
+      deep: true,
     },
   },
 });

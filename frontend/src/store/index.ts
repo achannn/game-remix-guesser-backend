@@ -15,7 +15,7 @@ function getYoutubeIdFromUrl(url: any) {
 export class State {
   questionPackage: QuestionPackage | null = null;
 
-  selectedAnswer: Choice | null = null;
+  selectedAnswer: number | null = null;
 }
 
 // export interface StateInterface extends State {};
@@ -40,6 +40,9 @@ export default createStore({
     setQuestionPackage(state: State, payload) {
       state.questionPackage = payload;
     },
+    setSelectedChoice(state: State, choice: number) {
+      state.selectedAnswer = choice;
+    },
   },
   actions: {
     async getRemixes({ commit }) {
@@ -62,7 +65,9 @@ export default createStore({
       const responseJson = await response.json();
       console.log(responseJson);
     },
-    async checkAnswer({ commit }, { public_id, secret_id }) {
+    async submitAnswer({ state }) {
+      const secret_id = state.questionPackage?.question.secret_id;
+      const public_id = state.selectedAnswer;
       const response = await fetch('/game/', {
         method: 'POST',
         mode: 'cors',
