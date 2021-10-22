@@ -107,28 +107,5 @@ def check_answer(db: Session = Depends(get_db), answer: models.Answer = {}):
 
 @app.get('/seed/')
 def seed_db(db: Session = Depends(get_db)):
-    ids = [
-        "OCR04280",
-        "OCR04270",
-        "OCR04271",
-        "OCR04272",
-        "OCR04273",
-        "OCR04274",
-        "OCR04275",
-        "OCR04276",
-        "OCR04277",
-        "OCR04278",
-        "OCR04279",
-        "OCR04260",
-        "OCR04261",
-        "OCR04262",
-        "OCR04263",
-        "OCR04264",
-        "OCR04265",
-        "OCR04266",
-        "OCR04267",
-        "OCR04268",
-        "OCR04269",
-
-    ]
+    ids = internal.ids
     return [consume_ocremix_remix(i, db) for i in ids]
