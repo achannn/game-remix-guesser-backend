@@ -3,8 +3,8 @@
     <div class="play-area">
       <button @click="getSong" class="get-song nes-btn">Get a Song</button>
 
-      <Song v-if="youtubeId" :youtubeId="youtubeId" />
-      <Answers v-if="youtubeId" />
+      <Song v-if="showQuestion" :youtubeId="youtubeId" />
+      <Answers v-if="showQuestion" />
       <RemixInfo v-if="correctAnswer" />
     </div>
   </div>
@@ -34,6 +34,12 @@ export default defineComponent({
     },
     correctAnswer() {
       return this.$store.getters.correctAnswer;
+    },
+    showQuestion() {
+      // TODO find out how to set computed properties as existing to typescript
+      // eslint-disable-next-line
+      // @ts-ignore
+      return this.youtubeId && !this.correctAnswer;
     },
   },
 });
