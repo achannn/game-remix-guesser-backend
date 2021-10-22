@@ -152,3 +152,9 @@ class Question(BaseModel):
 class QuestionPackage(BaseModel):
     choices: List[Choice] = []
     question: Question
+
+class CorrectAnswerPackage(BaseModel):
+    origin_game: str
+    remix_artist: str
+    ocremix_remix_url: str
+    original_song_title: str

@@ -1,7 +1,9 @@
-// export interface Answer {
-//   secret_id: number,
-//   public_id: number,
-// }
+export interface CorrectAnswer {
+  origin_game: string,
+  remix_artist: string,
+  ocremix_remix_url: string,
+  original_song_title: string,
+}
 
 export interface Choice {
   origin_game: string,

@@ -1,5 +1,5 @@
 import { createStore } from 'vuex';
-import { QuestionPackage, Choice } from './types';
+import { QuestionPackage, Choice, CorrectAnswer } from './types';
 
 // In which I question whether typescript is really worth the headache
 // ts-ignore
@@ -16,6 +16,8 @@ export class State {
   questionPackage: QuestionPackage | null = null;
 
   selectedAnswer: number | null = null;
+
+  correctAnswer: CorrectAnswer | null = null;
 }
 
 // export interface StateInterface extends State {};
@@ -35,6 +37,7 @@ export default createStore({
       }
       return null;
     },
+    correctAnswer: (state: State): CorrectAnswer | null => state.correctAnswer,
   },
   mutations: {
     setQuestionPackage(state: State, payload) {
@@ -42,6 +45,14 @@ export default createStore({
     },
     setSelectedChoice(state: State, choice: number) {
       state.selectedAnswer = choice;
+    },
+    clearGameState(state: State) {
+      state.selectedAnswer = null;
+      state.correctAnswer = null;
+      state.questionPackage = null;
+    },
+    setCorrectAnswer(state: State, answer: CorrectAnswer) {
+      state.correctAnswer = answer;
     },
   },
   actions: {
@@ -56,6 +67,7 @@ export default createStore({
       console.log(responseJson);
     },
     async getSong({ commit }) {
+      commit('clearGameState');
       const response = await fetch('/game/');
       const responseJson = await response.json();
       commit('setQuestionPackage', responseJson);
@@ -65,7 +77,7 @@ export default createStore({
       const responseJson = await response.json();
       console.log(responseJson);
     },
-    async submitAnswer({ state }) {
+    async submitAnswer({ state, commit }) {
       const secret_id = state.questionPackage?.question.secret_id;
       const public_id = state.selectedAnswer;
       const response = await fetch('/game/', {
@@ -81,6 +93,7 @@ export default createStore({
       });
       const responseJson = await response.json();
       console.log(responseJson);
+      commit('setCorrectAnswer', responseJson);
     },
   },
   modules: {

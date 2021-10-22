@@ -91,10 +91,19 @@ def give_remixes(db: Session = Depends(get_db)):
 def give_question(db: Session = Depends(get_db)):
     return crud.generate_question(db)
 
-@app.post('/game/')
+@app.post('/game/', response_model=models.CorrectAnswerPackage or None)
 def check_answer(db: Session = Depends(get_db), answer: models.Answer = {}):
     found_answer = crud.match_public_id_to_secret_id(db=db, public_id=answer.public_id, secret_id=answer.secret_id)
-    return found_answer
+    if found_answer is None:
+        return None;
+    answer_package = models.CorrectAnswerPackage(
+        origin_game=found_answer.remix_original_song.original_song_videogame.videogame_title,
+        remix_artist=found_answer.remix_artists.remix_artist_name,
+        ocremix_remix_url=found_answer.ocremix_remix_url,
+        original_song_title=found_answer.remix_original_song.original_song_title
+    )
+
+    return answer_package
 
 @app.get('/seed/')
 def seed_db(db: Session = Depends(get_db)):

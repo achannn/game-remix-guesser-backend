@@ -4,7 +4,8 @@
       <button @click="getSong" class="get-song nes-btn">Get a Song</button>
 
       <Song v-if="youtubeId" :youtubeId="youtubeId" />
-      <Answers />
+      <Answers v-if="youtubeId" />
+      <RemixInfo v-if="correctAnswer" />
     </div>
   </div>
 </template>
@@ -13,12 +14,14 @@
 import { defineComponent } from 'vue';
 import Song from '../components/Song.vue';
 import Answers from '../components/Answers.vue';
+import RemixInfo from '../components/RemixInfo.vue';
 
 export default defineComponent({
   name: 'Game',
   components: {
     Song,
     Answers,
+    RemixInfo,
   },
   methods: {
     getSong() {
@@ -28,6 +31,9 @@ export default defineComponent({
   computed: {
     youtubeId() {
       return this.$store.getters.currentQuestionYoutubeId;
+    },
+    correctAnswer() {
+      return this.$store.getters.correctAnswer;
     },
   },
 });
