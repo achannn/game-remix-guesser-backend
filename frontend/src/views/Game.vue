@@ -1,6 +1,7 @@
 <template>
   <div class="game">
-      <Song />
+      <Song :youtubeId="youtubeId" />
+      <button @click="getSong" class="nes-btn">Get a Song</button>
   </div>
 </template>
 
@@ -14,6 +15,14 @@ export default defineComponent({
     Song,
   },
   methods: {
+    getSong() {
+      this.$store.dispatch('getSong');
+    },
+  },
+  computed: {
+    youtubeId() {
+      return this.$store.getters.currentQuestionYoutubeId;
+    },
   },
 });
 

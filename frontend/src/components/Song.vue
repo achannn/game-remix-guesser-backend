@@ -11,25 +11,10 @@
 import { defineComponent } from 'vue';
 import youtube from '../plugins/vue-youtube';
 
-// eslint-disable-next-line
-// ts-ignore
-function getYoutubeIdFromUrl(url: any) {
-  // eslint-disable-next-line
-  // ts-ignore
-  const blah = url.split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
-  // eslint-disable-next-line
-  // ts-ignore
-  // eslint-disable-next-line
-  return (blah[2] !== undefined) ? blah[2].split(/[^0-9a-z_\-]/i)[0] : blah[0];
-}
-
 export default defineComponent({
   name: 'Song',
-  data() {
-    return {
-      youtubeId: getYoutubeIdFromUrl('https://www.youtube.com/watch?v=1xhghJVj2KE'),
-      id: 'ZVMigc6aQl0',
-    };
+  props: {
+    youtubeId: String,
   },
   components: {
     youtube,
@@ -42,8 +27,7 @@ export default defineComponent({
     },
   },
   computed: {
-    player() {
-      console.log(this.$refs.youtube);
+    player(): any {
       // eslint-disable-next-line
       // @ts-ignore
       return this.$refs.youtube.player;
@@ -55,6 +39,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 
 .youtube-wrapper {
-    opacity: 0;
+  display: none;
 }
 </style>
