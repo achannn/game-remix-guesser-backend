@@ -26,9 +26,6 @@ export default defineComponent({
   name: 'Home',
   components: {
   },
-  mounted() {
-    this.$store.dispatch('getRemixes');
-  },
   methods: {
     goToGame() {
       this.$router.push({ name: 'Game' });

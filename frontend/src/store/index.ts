@@ -63,12 +63,15 @@ export default createStore({
     },
   },
   actions: {
-    async getRemixes({ commit }) {
+    async getRemixes() {
       const response = await fetch('/remixes/');
       const responseJson = await response.json();
       console.log(responseJson);
     },
-    async submitRemixForParsing({ commit }, id: string) {
+    // Lol how do you do no first argument to an action in vuex
+    // without angering the linter or typescript?
+    // eslint-disable-next-line
+    async submitRemixForParsing({}, id: string) {
       const response = await fetch(`/parse/${id}`);
       const responseJson = await response.json();
       console.log(responseJson);
@@ -100,7 +103,6 @@ export default createStore({
         }),
       });
       const responseJson = await response.json();
-      console.log(responseJson);
       commit('setCorrectAnswer', responseJson);
       commit('setHasCheckedAnswer', true);
     },
