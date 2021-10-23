@@ -65,6 +65,7 @@ def get_or_create_remix_by_id(ocremix_id: str, db: Session = Depends(get_db)):
 @app.get('/parse/{ocremixid}')
 def consume_ocremix_remix(ocremixid: str, db: Session = Depends(get_db)):
   page_url = f"https://ocremix.org/remix/{ocremixid}"
+  internal.log_info(f"GET to /parse with {ocremixid}")
   try:
       page_info = scraper.scrape_remix_page(page_url)
   except:

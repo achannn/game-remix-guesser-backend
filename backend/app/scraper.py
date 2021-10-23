@@ -78,7 +78,7 @@ def scrape_remix_page(url):
         original_song_artist_url = soup.find('a', class_='color-original')['href']
     except Exception as inst:
         internal.log_error(f"Issue getting original song artist url for {url}, error is {inst}")
-
+    internal.log_info(f"Soup'ed up {url}")
     try:
         options = Options()
         options.page_load_strategy = 'normal'
@@ -86,7 +86,8 @@ def scrape_remix_page(url):
         options.add_argument('--user-data-dir=~/.config/google-chrome')
         options.add_argument('--no-sandbox')
         options.add_argument('--disable-dev-shm-usage')
-        options.add_argument('headless')
+        options.add_argument('--headless')
+        options.add_argument("window-size=1024,768")
 
         driver = webdriver.Chrome(options=options)
         driver.get(url)
@@ -97,6 +98,7 @@ def scrape_remix_page(url):
     except Exception as inst:
         internal.log_error(f"Issue getting youtube url for {url}, error is {inst}")
 
+    internal.log_info(f"Finished chromiuming {url}")
     return {
         'ocremix_remix_url': url,
         'videogame_title': game_title,
