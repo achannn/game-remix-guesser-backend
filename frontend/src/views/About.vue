@@ -16,7 +16,7 @@
       <p>
         He also has a
         <a href="https://www.youtube.com/channel/UCR2K9vyQEBb4qUyunijtBHg">
-          youtube</a>.
+          youtube</a><router-link to="/maintenance">.</router-link>
       </p>
 
     </section>

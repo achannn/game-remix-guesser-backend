@@ -33,3 +33,9 @@ Look for volumes with `mysql` in the name. For each of those volumes, do
 ```bash
 docker volume rm {volume_name}
 ```
+
+## ENv
+do
+```
+export GOOGLE_APPLICATION_CREDENTIALS="game-remix-guesser-a41630194599.json"
+```

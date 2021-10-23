@@ -13,4 +13,4 @@ build-frontend:
 	cd ./frontend && npm run build
 
 deploy-frontend:
-	gsutil rsync -R ./frontend/dist gs://game-remix-guesser-frontend
+	cp ./frontend/dist ./frontend-server/ -r

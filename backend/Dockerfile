@@ -18,8 +18,11 @@ RUN apt-get update && \
 
 ENV CHROMEDRIVER_DIR /chromedriver
 ENV PATH $CHROMEDRIVER_DIR:$PATH
+ENV PATH /usr/local/lib/python3.8/site-packages:$PATH
 
 COPY requirements.txt requirements.txt
+COPY game-remix-guesser-a41630194599.json game-remix-guesser-a41630194599.json
+
 COPY run.sh run.sh
 
 RUN pip3 install -r requirements.txt

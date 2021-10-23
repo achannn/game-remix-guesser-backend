@@ -2,7 +2,6 @@
   <div class="maintenance">
     <SubmitOcremixId />
     <GenerateQuestionButton />
-    <button></button>
   </div>
 </template>
 <script lang="ts">
