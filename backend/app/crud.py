@@ -200,7 +200,7 @@ def match_public_id_to_secret_id(db: Session, public_id: int, secret_id: int):
 def generate_question_deprecated(db: Session):
     remix_without_question = find_remix_without_question(db)
     if remix_without_question is None:
-        print("no more remixes without questions maybe?")
+        internal.log_error("no more remixes without questions maybe?")
         return None
     choice_1 = db.query(models.Remix).filter(models.Remix.id != remix_without_question.id).order_by(func.rand()).first()
     choice_2 = db.query(models.Remix).filter(models.Remix.id != remix_without_question.id).order_by(func.rand()).first()

@@ -14,8 +14,8 @@ def get_soup(page):
     return BeautifulSoup(page, "html.parser")
 
 def scrape_remix_page(url):
-    print("Trying to scrape url")
-    print(url)
+    internal.log_info("Trying to scrape url")
+    internal.log_info(url)
     try :
         soup = get_soup(get_page(url))
     except Exception as inst:
@@ -23,8 +23,8 @@ def scrape_remix_page(url):
         raise
         # return inst
 
-    print ("Successfully at least acquired url")
-    print (url)
+    internal.log_info ("Successfully at least acquired url")
+    internal.log_info (url)
     song_info = soup.find("h1")
 
     if song_info is None:

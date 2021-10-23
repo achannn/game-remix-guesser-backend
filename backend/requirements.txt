@@ -10,6 +10,10 @@ cryptography==3.4.7
 fastapi==0.66.1
 google-api-core==2.1.1
 google-auth==2.3.0
+google-cloud-appengine-logging==0.2.0
+google-cloud-audit-log==0.1.1
+google-cloud-core==2.1.0
+google-cloud-logging==2.6.0
 google-cloud-secret-manager==2.7.2
 googleapis-common-protos==1.53.0
 greenlet==1.1.0

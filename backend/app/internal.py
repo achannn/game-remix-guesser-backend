@@ -6,9 +6,10 @@ handle = "default"
 logger = logging.getLogger(handle)
 
 def log_error(e):
-    print("Logger logging error")
-    print(e)
-    logger.info(e)
+    logger.error(e)
+
+def log_info(i):
+    logger.info(i)
 
 ids = [
         "OCR04280",

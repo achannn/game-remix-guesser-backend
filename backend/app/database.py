@@ -39,7 +39,7 @@ port = ""
 DB_NAME = ""
 
 if os.getenv('ENV') == "DEV":
-    print("environment is dev")
+    internal.log_info("environment is dev")
     username=os.getenv('MYSQL_USER')
     password = os.getenv('MYSQL_ROOT_PASSWORD')
     host = os.getenv('MYSQL_HOST')
@@ -73,16 +73,16 @@ else:
 #     # Access the secret version.
 #     response = client.access_secret_version(request={"name": name})
 
-#     # Print the secret payload.
+#     # Internal.Log_Info the secret payload.
 #     #
-#     # WARNING: Do not print the secret in a production environment - this
+#     # WARNING: Do not internal.log_info the secret in a production environment - this
 #     # snippet is showing how to access the secret material.
 #     payload = response.payload.data.decode("UTF-8")
-#     print("Plaintext: {}".format(payload))
+#     internal.log_info("Plaintext: {}".format(payload))
 
 
 SQLALCHEMY_DATABASE_URL = f"mysql+mysqlconnector://{username}:{password}@{host}:{port}/{DB_NAME}"
-print(username)
+internal.log_info(username)
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL,

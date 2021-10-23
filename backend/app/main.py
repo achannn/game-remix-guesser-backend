@@ -2,10 +2,13 @@ import time
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
+import google.cloud.logging
 
 from . import crud, models, schemas, scraper, internal
 from .database import SessionLocal, engine, Base
 
+log_client = google.cloud.logging.Client()
+log_client.setup_logging()
 
 retries = 5
 def initiate_connection(retries: int):
