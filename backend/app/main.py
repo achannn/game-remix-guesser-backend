@@ -56,9 +56,12 @@ def get_remix_by_id(ocremix_id: str, db: Session = Depends(get_db)):
 
 @app.get('remixes/create/{id}')
 def get_or_create_remix_by_id(ocremix_id: str, db: Session = Depends(get_db)):
+    internal.log_info(f"get or create {ocremix_id}")
     remix = get_remix_by_id(ocremix_id=ocremix_id, db=db)
     if remix is not None:
+        internal.log_info(f"already had {ocremix_id}")
         return remix
+    internal.log_info(f"preparing to create {id}")
     return consume_ocremix_remix(ocremix_id, db)
 
 
@@ -125,5 +128,7 @@ def check_answer(db: Session = Depends(get_db), answer: models.Answer = {}):
 @app.get('/seed/')
 def seed_db(db: Session = Depends(get_db)):
     ids = internal.ids
+    internal.log_info("beginning seed")
     result = [get_or_create_remix_by_id(ocremix_id=i, db=db) for i in ids]
+    internal.log_info("finished seed")
     return {"status": "ok"}
