@@ -1,7 +1,9 @@
-#!/usr/bin/bash
-
 set -a
-source ../.dev.env
+source .env
 set +a
 
-uvicorn app.main:app --reload --port=3000
+if [ ${ENV} = "DEV" ]; then
+    uvicorn app.main:app --reload --host=0.0.0.0 --port=8000
+else
+    gunicorn app.main:app -w 4 -k uvicorn.workers.UvicornWorker --bind :${PORT}
+fi

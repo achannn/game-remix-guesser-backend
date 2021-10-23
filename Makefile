@@ -1,3 +1,5 @@
+.ONESHELL:
+
 dev:
 	docker-compose -f docker-compose.yml up --build
 
@@ -6,3 +8,9 @@ test:
 
 clean:
 	docker-compose down && docker volume rm $(docker volume ls -q)
+
+build-frontend:
+	cd ./frontend && npm run build
+
+deploy-frontend:
+	gsutil rsync -R ./frontend/dist gs://game-remix-guesser-frontend

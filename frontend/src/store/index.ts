@@ -1,5 +1,6 @@
 import { createStore } from 'vuex';
 import { QuestionPackage, Choice, CorrectAnswer } from './types';
+import { fetchApi } from './fetch';
 
 // In which I question whether typescript is really worth the headache
 // ts-ignore
@@ -64,7 +65,7 @@ export default createStore({
   },
   actions: {
     async getRemixes() {
-      const response = await fetch('/remixes/');
+      const response = await fetchApi('/remixes/');
       const responseJson = await response.json();
       console.log(responseJson);
     },
@@ -72,18 +73,18 @@ export default createStore({
     // without angering the linter or typescript?
     // eslint-disable-next-line
     async submitRemixForParsing({}, id: string) {
-      const response = await fetch(`/parse/${id}`);
+      const response = await fetchApi(`/parse/${id}`);
       const responseJson = await response.json();
       console.log(responseJson);
     },
     async getSong({ commit }) {
       commit('clearGameState');
-      const response = await fetch('/game/');
+      const response = await fetchApi('/game/');
       const responseJson = await response.json();
       commit('setQuestionPackage', responseJson);
     },
     async seedDB() {
-      const response = await fetch('/seed/');
+      const response = await fetchApi('/seed/');
       const responseJson = await response.json();
       console.log(responseJson);
     },
@@ -91,7 +92,7 @@ export default createStore({
       commit('setHasCheckedAnswer', false);
       const secret_id = state.questionPackage?.question.secret_id;
       const public_id = state.selectedAnswer;
-      const response = await fetch('/game/', {
+      const response = await fetchApi('/game/', {
         method: 'POST',
         mode: 'cors',
         headers: {

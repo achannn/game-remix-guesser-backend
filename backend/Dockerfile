@@ -1,8 +1,10 @@
 # syntax=docker/dockerfile:1
 
+
 FROM python:3.8-slim-buster
 WORKDIR /app
 
+SHELL ["/bin/bash", "-c"]
 RUN apt-get update && \
     apt-get install -y gnupg wget curl unzip --no-install-recommends && \
     wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
@@ -18,8 +20,11 @@ ENV CHROMEDRIVER_DIR /chromedriver
 ENV PATH $CHROMEDRIVER_DIR:$PATH
 
 COPY requirements.txt requirements.txt
+COPY run.sh run.sh
 
 RUN pip3 install -r requirements.txt
 COPY . .
 
-CMD [ "uvicorn", "app.main:app", "--reload", "--host=0.0.0.0", "--port=8000"]
+RUN chmod u+x run.sh
+
+CMD ./run.sh
