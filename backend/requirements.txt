@@ -8,16 +8,7 @@ charset-normalizer==2.0.3
 click==8.0.1
 cryptography==3.4.7
 fastapi==0.66.1
-google-api-core==2.1.1
-google-auth==2.3.0
-google-cloud-appengine-logging==0.2.0
-google-cloud-audit-log==0.1.1
-google-cloud-core==2.1.0
-google-cloud-logging==2.6.0
-google-cloud-secret-manager==2.7.2
-googleapis-common-protos==1.53.0
 greenlet==1.1.0
-grpc-google-iam-v1==0.12.3
 grpcio==1.41.0
 gunicorn==20.1.0
 h11==0.12.0

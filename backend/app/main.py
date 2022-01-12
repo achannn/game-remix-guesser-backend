@@ -1,14 +1,11 @@
 import time
 from fastapi import Depends, FastAPI, HTTPException
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
-import google.cloud.logging
 
 from . import crud, models, schemas, scraper, internal
 from .database import SessionLocal, engine, Base
-
-log_client = google.cloud.logging.Client()
-log_client.setup_logging()
 
 retries = 5
 def initiate_connection(retries: int):
@@ -26,7 +23,6 @@ def initiate_connection(retries: int):
 
 initiate_connection(retries)
 
-
 app = FastAPI()
 
 app.add_middleware(
@@ -37,6 +33,7 @@ app.add_middleware(
     allow_credentials=True,
     )
 
+
 # Dependency
 def get_db():
     try:
@@ -46,9 +43,7 @@ def get_db():
         db.close()
 
 
-@app.get('/')
-def main():
-  return 'Hello, Docker!'
+app.mount("/", StaticFiles(directory="app/static", html=True), name="static")
 
 @app.get('/remixes/{id}' )
 def get_remix_by_id(ocremix_id: str, db: Session = Depends(get_db)):
