@@ -37,5 +37,6 @@ docker volume rm {volume_name}
 ## ENv
 do
 ```
-export GOOGLE_APPLICATION_CREDENTIALS="game-remix-guesser-a41630194599.json"
-```
+export $(cat .dev.env | xargs)
+
+ ```

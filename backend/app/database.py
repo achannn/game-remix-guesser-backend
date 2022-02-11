@@ -13,22 +13,12 @@ host = ""
 port = ""
 DB_NAME = ""
 
-if os.getenv('ENV') == "DEV":
-    internal.log_info("environment is dev")
-    username=os.getenv('MYSQL_USER')
-    password = os.getenv('MYSQL_ROOT_PASSWORD')
-    host = os.getenv('MYSQL_HOST')
-    port = os.getenv('MYSQL_PORT')
-    DB_NAME = os.getenv('MYSQL_DATABASE')
+if not os.getenv("DATABASE_URL"):
+    raise RuntimeError("DATABASE_URL is not set")
 
+# SQLALCHEMY_DATABASE_URL = f"mysql+psycopg2://{username}:{password}@{host}:{port}/{DB_NAME}"
 
-SQLALCHEMY_DATABASE_URL = f"mysql+mysqlconnector://{username}:{password}@{host}:{port}/{DB_NAME}"
-internal.log_info(username)
-
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL,
-    connect_args={'auth_plugin': 'mysql_native_password'}
-)
+engine = create_engine(os.getenv("DATABASE_URL"))
 
 
 class RetryingQuery(_Query):

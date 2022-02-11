@@ -18,15 +18,14 @@ Jinja2==3.0.1
 libcst==0.3.21
 MarkupSafe==2.0.1
 mypy-extensions==0.4.3
-mysql-connector-python==8.0.25
 packaging==21.0
 proto-plus==1.19.5
 protobuf==3.17.3
+psycopg2-binary==2.9.3
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pycparser==2.20
 pydantic==1.8.2
-PyMySQL==1.0.2
 pyparsing==2.4.7
 PyYAML==6.0
 requests==2.26.0

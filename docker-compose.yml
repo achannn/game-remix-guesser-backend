@@ -1,43 +1,22 @@
 version: '3.8'
 
 services:
- api:
-  build:
-   context: ./backend/
-  ports:
-  - 8000:8000
-  env_file:
-  - .dev.env
-  networks:
-    - local-net
-  depends_on:
-    - mysqldbgame
-  volumes: ['./backend:/app']
+ # api:
+ #  build:
+ #   context: ./backend/
+ #  ports:
+ #  - 8000:8000
+ #  env_file:
+ #  - .dev.env
+ #  depends_on:
+ #    - mysqldbgame
+ #  volumes: ['./backend:/app']
 
  mysqldbgame:
-  image: mysql
-  container_name: "mysqldbgame"
+  image: postgres
+  container_name: "psqldbgame"
   restart: always
   ports:
-  - 3306:3306
+  - 5432:5432
   env_file:
   - .dev.env
-  volumes:
-  - mysqlgame:/var/lib/mysql
-  - mysql_configgame:/etc/mysql
-  networks:
-  - local-net
-
- # frontend:
- #   build:
- #     context: ./frontend/
- #   ports:
- #   - 8080:8080
-
-volumes:
-  mysqlgame:
-  mysql_configgame:
-
-networks:
-  local-net:
-    driver: bridge
