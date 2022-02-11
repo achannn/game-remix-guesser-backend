@@ -43,7 +43,6 @@ def get_db():
         db.close()
 
 
-app.mount("/", StaticFiles(directory="app/static", html=True), name="static")
 
 @app.get('/remixes/{id}' )
 def get_remix_by_id(ocremix_id: str, db: Session = Depends(get_db)):
@@ -127,3 +126,7 @@ def seed_db(db: Session = Depends(get_db)):
     result = [get_or_create_remix_by_id(ocremix_id=i, db=db) for i in ids]
     internal.log_info("finished seed")
     return {"status": "ok"}
+
+static_app = FastAPI(title="Static Files")
+static_app.mount("/api", app)
+static_app.mount("/", StaticFiles(directory="app/static", html=True), name="static")

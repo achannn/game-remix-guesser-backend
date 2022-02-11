@@ -79,7 +79,7 @@ export default createStore({
     },
     async getSong({ commit }) {
       commit('clearGameState');
-      const response = await fetchApi('/game/');
+      const response = await fetchApi('/game/', {});
       const responseJson = await response.json();
       commit('setQuestionPackage', responseJson);
     },
