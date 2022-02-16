@@ -160,7 +160,8 @@ def create_question(db: Session,
     return question
 
 def generate_question(db: Session):
-    questions = db.query(models.Remix).order_by(func.rand()).limit(4)
+    questions = db.query(models.Remix).order_by(func.random()).limit(4)
+    internal.log_error(questions)
     response = construct_frontend_question(questions)
     return response
 
@@ -202,9 +203,9 @@ def generate_question_deprecated(db: Session):
     if remix_without_question is None:
         internal.log_error("no more remixes without questions maybe?")
         return None
-    choice_1 = db.query(models.Remix).filter(models.Remix.id != remix_without_question.id).order_by(func.rand()).first()
-    choice_2 = db.query(models.Remix).filter(models.Remix.id != remix_without_question.id).order_by(func.rand()).first()
-    choice_3 = db.query(models.Remix).filter(models.Remix.id != remix_without_question.id).order_by(func.rand()).first()
+    choice_1 = db.query(models.Remix).filter(models.Remix.id != remix_without_question.id).order_by(func.random()).first()
+    choice_2 = db.query(models.Remix).filter(models.Remix.id != remix_without_question.id).order_by(func.random()).first()
+    choice_3 = db.query(models.Remix).filter(models.Remix.id != remix_without_question.id).order_by(func.random()).first()
     question = create_question(db, correct_remix=remix_without_question, choice_1_remix=choice_1, choice_2_remix=choice_2, choice_3_remix=choice_3)
     return question
 
@@ -222,4 +223,4 @@ def find_remix_without_question(db: Session):
 # For now I don't really know how to prevent the same question being sent twice
 # Sessions?
 def return_random_question(db: Session):
-    return db.query(models.Question).order_by(func.rand()).first()
+    return db.query(models.Question).order_by(func.random()).first()
