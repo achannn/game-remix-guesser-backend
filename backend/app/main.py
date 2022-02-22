@@ -2,7 +2,9 @@ import time
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, scoped_session, sessionmaker
+from typing import List
+import csv
 
 from . import crud, models, schemas, scraper, internal
 from .database import SessionLocal, engine, Base
@@ -33,7 +35,6 @@ app.add_middleware(
     allow_credentials=True,
     )
 
-
 # Dependency
 def get_db():
     try:
@@ -42,64 +43,49 @@ def get_db():
     finally:
         db.close()
 
+# @app.get('/seed/')
+# def consume_ocremix_remix(db_session, row: List[str]):
+#   internal.log_info('invoked consumer_coremix_ with row {row}')
 
+#   remix = {
+#     'remix_youtube_url': row[0],
+#     'ocremix_remix_url': row[1],
+#     'remix_title': row[2],
+#     'ocremix_remix_id': row[3],
+#   }
+#   remix_artist = {
+#     'remix_artist_name': row[4],
+#     'remix_artist_ocremix_url': row[5],
+#   }
+#   remix_original_song = {
+#     'original_song_title': row[6],
+#     'original_song_ocremix_url': row[7],
+#   }
+#   original_artist = {
+#     'original_artist_name': row[8],
+#     'original_artist_ocremix_url': row[9],
+#   }
+#   videogame = {
+#     'videogame_title': row[10],
+#     'videogame_ocremix_url': row[11],
+#     # 'videogame_console': row.videogame_console,
+#   }
+#   ocremix_mix = db_session.query(models.Remix).filter_by(ocremix_remix_id=remix['ocremix_remix_id']).first()
+#   if (ocremix_mix is not None):
+#       return ocremix_mix
+#   out = crud.deep_create_remix(db_session, remix, remix_artist, remix_original_song, original_artist, videogame)
+#   return out
 
-@app.get('/remixes/{id}' )
-def get_remix_by_id(ocremix_id: str, db: Session = Depends(get_db)):
-    return crud.get_remix_by_ocremix_id(db, ocremix_id=ocremix_id)
-
-@app.get('remixes/create/{id}')
-def get_or_create_remix_by_id(ocremix_id: str, db: Session = Depends(get_db)):
-    internal.log_info(f"get or create {ocremix_id}")
-    remix = get_remix_by_id(ocremix_id=ocremix_id, db=db)
-    if remix is not None:
-        internal.log_info(f"already had {ocremix_id}")
-        return remix
-    internal.log_info(f"preparing to create {id}")
-    return consume_ocremix_remix(ocremix_id, db)
-
-
-@app.get('/parse/{ocremixid}')
-def consume_ocremix_remix(ocremixid: str, db: Session = Depends(get_db)):
-  page_url = f"https://ocremix.org/remix/{ocremixid}"
-  internal.log_info(f"GET to /parse with {ocremixid}")
-  try:
-      page_info = scraper.scrape_remix_page(page_url)
-  except:
-      internal.log_error(f"Failed to get page {page_url}")
-      return None
-
-  remix = {
-    'remix_youtube_url': page_info['remix_youtube_url'],
-    'ocremix_remix_url': page_info['ocremix_remix_url'],
-    'remix_title': page_info['remix_title'],
-    'ocremix_remix_id': ocremixid,
-  }
-  remix_artist = {
-    'remix_artist_name': page_info['remix_artist_name'],
-    'remix_artist_ocremix_url': page_info['remix_artist_ocremix_url'],
-  }
-  remix_original_song = {
-    'original_song_title': page_info['original_song_title'],
-    'original_song_ocremix_url': page_info['original_song_ocremix_url'],
-  }
-  original_artist = {
-    'original_artist_name': page_info['original_artist_name'],
-    'original_artist_ocremix_url': page_info['original_artist_ocremix_url'],
-  }
-  videogame = {
-    'videogame_title': page_info['videogame_title'],
-    'videogame_ocremix_url': page_info['videogame_ocremix_url'],
-    # 'videogame_console': page_info.videogame_console,
-  }
-  ocremix_mix = db.query(models.Remix).filter_by(ocremix_remix_id=remix['ocremix_remix_id']).first()
-  if (ocremix_mix is not None):
-      return ocremix_mix
-  return crud.deep_create_remix(db, remix, remix_artist, remix_original_song, original_artist, videogame)
-
-@app.get('/remixes/')
-def give_remixes(db: Session = Depends(get_db)):
-    return crud.get_remixes(db)
+def parse_csv():
+    internal.log_info(f'About to open csv')
+    db_session_maker = sessionmaker(bind=engine)
+    db_session = db_session_maker()
+    with open('data.csv') as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=',')
+        line_count = 0
+        for row in csv_reader:
+            consume_ocremix_remix(db_session, row)
+            line_count += 1
 
 @app.get('/game/', response_model=models.QuestionPackage)
 def give_question(db: Session = Depends(get_db)):
@@ -119,14 +105,9 @@ def check_answer(db: Session = Depends(get_db), answer: models.Answer = {}):
 
     return answer_package
 
-@app.get('/seed/')
-def seed_db(db: Session = Depends(get_db)):
-    ids = internal.ids
-    internal.log_info("beginning seed")
-    result = [get_or_create_remix_by_id(ocremix_id=i, db=db) for i in ids]
-    internal.log_info("finished seed")
-    return {"status": "ok"}
 
 static_app = FastAPI(title="Static Files")
 static_app.mount("/api", app)
 static_app.mount("/", StaticFiles(directory="app/static", html=True), name="static")
+
+# parse_csv()

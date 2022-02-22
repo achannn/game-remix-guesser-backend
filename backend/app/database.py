@@ -18,7 +18,7 @@ if not os.getenv("DATABASE_URL"):
 
 # SQLALCHEMY_DATABASE_URL = f"mysql+psycopg2://{username}:{password}@{host}:{port}/{DB_NAME}"
 
-engine = create_engine(os.getenv("DATABASE_URL"))
+engine = create_engine(os.getenv("DATABASE_URL"), pool_size=11120, max_overflow=0)
 
 
 class RetryingQuery(_Query):
