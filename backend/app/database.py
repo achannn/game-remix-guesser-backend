@@ -21,7 +21,7 @@ uri = os.getenv("DATABASE_URL")  # or other relevant config var
 if uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://", 1)
 
-engine = create_engine(os.getenv("DATABASE_URL"), pool_size=11120, max_overflow=0)
+engine = create_engine(uri, pool_size=11120, max_overflow=0)
 
 
 class RetryingQuery(_Query):
