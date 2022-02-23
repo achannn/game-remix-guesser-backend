@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session, scoped_session, sessionmaker
 from typing import List
 import csv
 
-from . import crud, models, schemas, scraper, internal
+from . import crud, models, schemas, internal
 from .database import SessionLocal, engine, Base
 
 retries = 5
