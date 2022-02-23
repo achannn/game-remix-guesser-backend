@@ -108,6 +108,6 @@ def check_answer(db: Session = Depends(get_db), answer: models.Answer = {}):
 
 static_app = FastAPI(title="Static Files")
 static_app.mount("/api", app)
-static_app.mount("/", StaticFiles(directory="app/static", html=True), name="static")
+static_app.mount("/", StaticFiles(directory="backend/app/static", html=True), name="static")
 
 # parse_csv()
