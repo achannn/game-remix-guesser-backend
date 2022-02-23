@@ -1,4 +1,5 @@
 import os
+import re
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -16,7 +17,9 @@ DB_NAME = ""
 if not os.getenv("DATABASE_URL"):
     raise RuntimeError("DATABASE_URL is not set")
 
-# SQLALCHEMY_DATABASE_URL = f"mysql+psycopg2://{username}:{password}@{host}:{port}/{DB_NAME}"
+uri = os.getenv("DATABASE_URL")  # or other relevant config var
+if uri.startswith("postgres://"):
+    uri = uri.replace("postgres://", "postgresql://", 1)
 
 engine = create_engine(os.getenv("DATABASE_URL"), pool_size=11120, max_overflow=0)
 
