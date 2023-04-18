@@ -44,37 +44,37 @@ def get_db():
         db.close()
 
 # @app.get('/seed/')
-# def consume_ocremix_remix(db_session, row: List[str]):
-#   internal.log_info('invoked consumer_coremix_ with row {row}')
+def consume_ocremix_remix(db_session, row: List[str]):
+  internal.log_info('invoked consume_ocremix_ with row {row}')
 
-#   remix = {
-#     'remix_youtube_url': row[0],
-#     'ocremix_remix_url': row[1],
-#     'remix_title': row[2],
-#     'ocremix_remix_id': row[3],
-#   }
-#   remix_artist = {
-#     'remix_artist_name': row[4],
-#     'remix_artist_ocremix_url': row[5],
-#   }
-#   remix_original_song = {
-#     'original_song_title': row[6],
-#     'original_song_ocremix_url': row[7],
-#   }
-#   original_artist = {
-#     'original_artist_name': row[8],
-#     'original_artist_ocremix_url': row[9],
-#   }
-#   videogame = {
-#     'videogame_title': row[10],
-#     'videogame_ocremix_url': row[11],
-#     # 'videogame_console': row.videogame_console,
-#   }
-#   ocremix_mix = db_session.query(models.Remix).filter_by(ocremix_remix_id=remix['ocremix_remix_id']).first()
-#   if (ocremix_mix is not None):
-#       return ocremix_mix
-#   out = crud.deep_create_remix(db_session, remix, remix_artist, remix_original_song, original_artist, videogame)
-#   return out
+  remix = {
+    'remix_youtube_url': row[0],
+    'ocremix_remix_url': row[1],
+    'remix_title': row[2],
+    'ocremix_remix_id': row[3],
+  }
+  remix_artist = {
+    'remix_artist_name': row[4],
+    'remix_artist_ocremix_url': row[5],
+  }
+  remix_original_song = {
+    'original_song_title': row[6],
+    'original_song_ocremix_url': row[7],
+  }
+  original_artist = {
+    'original_artist_name': row[8],
+    'original_artist_ocremix_url': row[9],
+  }
+  videogame = {
+    'videogame_title': row[10],
+    'videogame_ocremix_url': row[11],
+    # 'videogame_console': row.videogame_console,
+  }
+  ocremix_mix = db_session.query(models.Remix).filter_by(ocremix_remix_id=remix['ocremix_remix_id']).first()
+  if (ocremix_mix is not None):
+      return ocremix_mix
+  out = crud.deep_create_remix(db_session, remix, remix_artist, remix_original_song, original_artist, videogame)
+  return out
 
 def parse_csv():
     internal.log_info(f'About to open csv')
@@ -84,6 +84,7 @@ def parse_csv():
         csv_reader = csv.reader(csv_file, delimiter=',')
         line_count = 0
         for row in csv_reader:
+            internal.log_info('row count ' + str(line_count))
             consume_ocremix_remix(db_session, row)
             line_count += 1
 
@@ -106,8 +107,6 @@ def check_answer(db: Session = Depends(get_db), answer: models.Answer = {}):
     return answer_package
 
 
-static_app = FastAPI(title="Static Files")
-static_app.mount("/api", app)
-static_app.mount("/", StaticFiles(directory="backend/app/static", html=True), name="static")
 
-# parse_csv()
+
+parse_csv()

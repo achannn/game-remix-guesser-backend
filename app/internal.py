@@ -9,5 +9,5 @@ logging.getLogger().setLevel(logging.INFO)
 def log_error(e):
     logger.error(e)
 
-def log_info(i):
+def log_info(i: str):
     logger.info(i)
