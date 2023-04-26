@@ -80,7 +80,7 @@ def parse_csv():
     internal.log_info(f'About to open csv')
     db_session_maker = sessionmaker(bind=engine)
     db_session = db_session_maker()
-    with open('data.csv') as csv_file:
+    with open('ocremix.csv') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         line_count = 0
         for row in csv_reader:

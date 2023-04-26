@@ -6,9 +6,14 @@ COPY requirements.txt /requirements.txt
 
 COPY run.sh /run.sh
 
+RUN apt update
+RUN apt install wget -y
+
 RUN pip3 install -r requirements.txt
 COPY . .
 
 RUN chmod u+x run.sh
+
+RUN wget -q --tries=10 https://www.calebjay.com/ocremix.csv -O ocremix.csv
 
 ENTRYPOINT [ "/run.sh" ]
