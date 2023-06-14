@@ -8,5 +8,5 @@ if [ ${ENV} == "DEV" ]; then
     uvicorn app.main:app --reload --host=0.0.0.0 --port=8000
 else
     echo "Running prod environment"
-    uvicorn app.main:app --host=0.0.0.0 --port=80
+    uvicorn app.main:app --host=0.0.0.0 --port=8000
 fi
