@@ -13,9 +13,6 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     steps:
-      # -----
-      # Allow this instance spun up by github to SSH into our vps
-      # -----
       - name: Write keys and grab source
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
