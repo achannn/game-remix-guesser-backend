@@ -34,8 +34,8 @@ jobs:
       - name: make some oflder
         run: mkdir send
       - name: record source
-        run: ls -al > send/home.txt
+        run: ls -al .. > send/home.txt
       - name: record pwd
-        run: pwd > send/home2.txt
+        run: ls -al ../.. > send/home3.txt
       - name: Grab source
         run: rsync -rav --delete -e 'ssh -p 3732'  send/  "$SSH_USERNAME"@"$SSH_HOST":/home/"$SSH_USERNAME"/src/game-remix-guesser-backend/
