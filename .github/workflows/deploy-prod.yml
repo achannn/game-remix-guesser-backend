@@ -32,4 +32,4 @@ jobs:
       - name: Scan into known hosts
         run: ssh-keyscan -H -p "$SSH_PORT" "$SSH_HOST" > ~/.ssh/known_hosts
       - name: Grab source
-        run: rsync -rav --delete -e 'ssh -p 3732' ./ "$SSH_USERNAME"@"$SSH_HOST":/home/"$SSH_USERNAME"/src/game-remix-guesser-backend/
+        run: rsync -rav --delete -e 'ssh -p 3732' ./app "$SSH_USERNAME"@"$SSH_HOST":/home/"$SSH_USERNAME"/src/game-remix-guesser-backend/
