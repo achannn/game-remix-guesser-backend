@@ -22,6 +22,12 @@ jobs:
       # -----
       # Allow this instance spun up by github to SSH into our vps
       # -----
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
       - uses: actions/download-artifact@v2
       - name: Copy bleck into id rsa
         run: install -m 600 -D /dev/null ~/.ssh/id_rsa
@@ -38,4 +44,4 @@ jobs:
       - name: record pwd
         run: ls -al ../.. > send/home3.txt
       - name: Grab source
-        run: rsync -rav --delete -e 'ssh -p 3732'  send/  "$SSH_USERNAME"@"$SSH_HOST":/home/"$SSH_USERNAME"/src/game-remix-guesser-backend/
+        run: rsync -rav --delete -e 'ssh -p 3732'  ${{ github.workspace }}/  "$SSH_USERNAME"@"$SSH_HOST":/home/"$SSH_USERNAME"/src/game-remix-guesser-backend/
