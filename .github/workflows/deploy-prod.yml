@@ -1,0 +1,30 @@
+name: Deploy Prod
+
+# -----
+# This workflow will run whenever changes are pushed to main
+# -----
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      # -----
+      # Allow this instance spun up by github to SSH into
+      # our VPS
+      # -----
+      - name: SSH and rsync source
+        - uses: actions/download-artifact@v2
+          with:
+            name: build
+            - name: Write SSH keys
+              run: |
+                install -m 600 -D /dev/null ~/.ssh/id_rsa
+                echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+                ssh-keyscan -H host.example.com > ~/.ssh/known_hosts
+            - name: Copy over source with rsync
+              run: rsync -rav --delete build/${{secrets.SSH_USERNAME}}@${{secrets.SSH_HOST}}:/src/game-remix-guesser-backend/
