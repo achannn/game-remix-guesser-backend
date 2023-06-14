@@ -16,11 +16,16 @@ jobs:
       # -----
       # Allow this instance spun up by github to SSH into our vps
       # -----
-      - uses: actions/download-artifact@v2
-      - name: Write SSH keys
-        run: |
-          install -m 600 -D /dev/null ~/.ssh/id_rsa
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          ssh-keyscan -H ${{secrets.SSH_HOST}} > ~/.ssh/known_hosts
-      - name: Copy over source with rsync
-        run: rsync -rav --delete -e 'ssh -p ${{secrets.SSH_PORT}}' build/${{secrets.SSH_USERNAME}}@${{secrets.SSH_HOST}}:/src/game-remix-guesser-backend/
+      - name: Write keys and grab source
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_POST: ${{ secrets.SSH_PORT }}
+        - uses: actions/download-artifact@v2
+        - name: Write SSH keys
+          run: |
+            install -m 600 -D /dev/null ~/.ssh/id_rsa
+            echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+            ssh-keyscan -H "$SSH_HOST" > ~/.ssh/known_hosts
+        - name: Copy over source with rsync
+          run: rsync -rav --delete -e 'ssh -p "$secrets.SSH_PORT"' build/"$secrets.SSH_USERNAME"@"$secrets.SSH_HOST":/src/game-remix-guesser-backend/
