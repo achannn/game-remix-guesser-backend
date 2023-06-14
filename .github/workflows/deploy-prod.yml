@@ -40,13 +40,13 @@ jobs:
       - name: Create env file
         run: touch ${{ github.workspace}}/.env
       - name: Write in prod env
-        run: echo 'ENV=PROD' >> ${{ github.workspace }}/.env
+        run: echo ENV=PROD >> ${{ github.workspace }}/.env
       - name: Write in postgres password
-        run: echo 'POSTGRES_PASSWORD="$POSTGRES_PASSWORD"' >> ${{ github.workspace }}/.env
+        run: echo POSTGRES_PASSWORD="$POSTGRES_PASSWORD" >> ${{ github.workspace }}/.env
       - name: Write in postgres db name
-        run: echo 'POSTGRES_DB="$POSTGRES_DB"' >> ${{ github.workspace }}/.env
+        run: echo POSTGRES_DB="$POSTGRES_DB" >> ${{ github.workspace }}/.env
       - name: Write in postgres database url
-        run: echo 'DATABASE_URL= postgresql://"$POSTGRES_USER":"$POSTGRES_PASSWORD"@psqldbgame:5432/psqldbgame' >> ${{ github.workspace }}/.env
+        run: echo DATABASE_URL= postgresql://"$POSTGRES_USER":"$POSTGRES_PASSWORD"@psqldbgame:5432/psqldbgame >> ${{ github.workspace }}/.env
       - name: Send updated source to our VPS
         run: rsync -rav --delete -e 'ssh -p 3732'  ${{ github.workspace }}/  "$SSH_USERNAME"@"$SSH_HOST":/home/"$SSH_USERNAME"/src/game-remix-guesser-backend/
   launch:
@@ -55,4 +55,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Tear down old docker
-        run: ssh -t -p 3732 "${SSH_USERNAME}":"${SSH_HOST}" "cd src/game-remix-guesser-backend && docker compose down"
+        run: ssh -t -p 3732 "${SSH_USERNAME}"@"${SSH_HOST}" "cd src/game-remix-guesser-backend && docker compose down"
