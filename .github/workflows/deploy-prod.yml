@@ -27,4 +27,4 @@ jobs:
                 echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
                 ssh-keyscan -H host.example.com > ~/.ssh/known_hosts
             - name: Copy over source with rsync
-              run: rsync -rav --delete build/${{secrets.SSH_USERNAME}}@${{secrets.SSH_HOST}}:/src/game-remix-guesser-backend/
+              run: rsync -rav --delete -e 'ssh -p ${{secrets.SSH_PORT}}' build/${{secrets.SSH_USERNAME}}@${{secrets.SSH_HOST}}:/src/game-remix-guesser-backend/
