@@ -14,8 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # -----
-      # Allow this instance spun up by github to SSH into
-      # our VPS
+      # Allow this instance spun up by github to SSH into our vps
       # -----
       - name: SSH and rsync source
         - uses: actions/download-artifact@v2
