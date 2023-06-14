@@ -19,9 +19,6 @@ jobs:
     environment: prod
     runs-on: ubuntu-latest
     steps:
-      # -----
-      # Allow this instance spun up by github to SSH into our vps
-      # -----
       - name: Check out repository code
         uses: actions/checkout@v3
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
@@ -37,11 +34,5 @@ jobs:
         run: echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
       - name: Scan into known hosts
         run: ssh-keyscan -H -p "$SSH_PORT" "$SSH_HOST" > ~/.ssh/known_hosts
-      - name: make some oflder
-        run: mkdir send
-      - name: record source
-        run: ls -al .. > send/home.txt
-      - name: record pwd
-        run: ls -al ../.. > send/home3.txt
-      - name: Grab source
+      - name: Send updated source to our VPS
         run: rsync -rav --delete -e 'ssh -p 3732'  ${{ github.workspace }}/  "$SSH_USERNAME"@"$SSH_HOST":/home/"$SSH_USERNAME"/src/game-remix-guesser-backend/
