@@ -22,11 +22,13 @@ jobs:
       # Allow this instance spun up by github to SSH into our vps
       # -----
       - uses: actions/download-artifact@v2
-      - name: Write keys
-        run: |
-          install -m 600 -D /dev/null ~/.ssh/id_rsa
-          echo "$SSH_HOST"
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-          ssh-keyscan -H "$SSH_HOST" > ~/.ssh/known_hosts
+      - name: Copy bleck into id rsa
+        run: install -m 600 -D /dev/null ~/.ssh/id_rsa
+      - name: See if env vars propagated
+        run: echo "$SSH_HOST"
+      - name: Copy private key into keyfile
+        run: echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+      - name: Scan into known hosts
+        run: ssh-keyscan -H "$SSH_HOST" > ~/.ssh/known_hosts
       - name: Grab source
         run: rsync -rav --delete -e 'ssh -p "$secrets.SSH_PORT"' build/"$secrets.SSH_USERNAME"@"$secrets.SSH_HOST":/src/game-remix-guesser-backend/
