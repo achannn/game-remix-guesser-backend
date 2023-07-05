@@ -52,6 +52,6 @@ jobs:
       - name: Send updated source to our VPS
         run: rsync -rav --delete -e 'ssh -p 3732'  ${{ github.workspace }}/  "$SSH_USERNAME"@"$SSH_HOST":/home/"$SSH_USERNAME"/src/game-remix-guesser-backend/
       - name: Tear down old docker
-        run: ssh -p 3732 "${SSH_USERNAME}"@"${SSH_HOST}" "cd src/game-remix-guesser-backend && docker compose down"
+        run: ssh -p 3732 "${SSH_USERNAME}"@"${SSH_HOST}" "cd src/game-remix-guesser-backend && docker compose down --rmi all"
       - name: Start up new docker
         run: ssh -p 3732 "${SSH_USERNAME}"@"${SSH_HOST}" "cd src/game-remix-guesser-backend && docker compose -f docker-compose.prod.yml up -d"
