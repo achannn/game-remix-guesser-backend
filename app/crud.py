@@ -160,7 +160,12 @@ def create_question(db: Session,
     return question
 
 def generate_question(db: Session):
-    questions = db.query(models.Remix).order_by(func.random()).limit(4)
+    games = db.query(models.Videogame).order_by(func.random()).limit(4)
+    questions = (db.query(models.Remix)
+                 .join(models.OriginalSong)
+                 .join(games)
+                 .distinct(models.OriginalSong.original_song_videogame_id)
+                 .order_by(models.OriginalSong.original_song_videogame_id, func.random()))
     internal.log_error(questions)
     response = construct_frontend_question(questions)
     return response
